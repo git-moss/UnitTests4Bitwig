@@ -4,6 +4,10 @@ host.defineController ("Moss", "Unit Tests", "1.0", "423793DD-89BA-49DC-9E6E-5C6
 
 const TEST_PROPERTY_GETTER   = true;
 const TEST_PROPERTY_OBSERVER = true;
+
+const TEST_APPLICATION       = true;
+const TEST_ARRANGER          = true;
+const TEST_MIXER             = true;
 const TEST_CURSOR_DEVICE     = true;
 const TEST_REMOTE_CONTROLS   = true;
 const TEST_DEVICE_SIBLINGS   = true;
@@ -27,14 +31,51 @@ function init ()
 {
     println ("----------------------------------------------------------------------");
     
+    // Test Application properties
+    
+    if (TEST_APPLICATION)
+    {
+        var application = host.createApplication ();
+        assertNotNull ("Application not created.", application);
+        
+        testProperty ("application.hasActiveEngine", application.hasActiveEngine (), true, false, true);
+        testProperty ("application.projectName", application.projectName (), "UnitTestsProject");
+        testProperty ("application.panelLayout", application.panelLayout (), "ARRANGE");
+    }
+    
+    // Test Arranger properties
+    
+    if (TEST_ARRANGER)
+    {
+        var arranger = host.createArranger ();
+        testProperty ("arranger.areCueMarkersVisible", arranger.areCueMarkersVisible (), false, false, true);
+        testProperty ("arranger.isPlaybackFollowEnabled", arranger.isPlaybackFollowEnabled (), true, false, true);
+        testProperty ("arranger.hasDoubleRowTrackHeight", arranger.hasDoubleRowTrackHeight (), true, false, true);
+        testProperty ("arranger.isClipLauncherVisible", arranger.isClipLauncherVisible (), true, false, true);
+        testProperty ("arranger.isTimelineVisible", arranger.isTimelineVisible (), true, false, true);
+        testProperty ("arranger.isIoSectionVisible", arranger.isIoSectionVisible (), false, false, true);
+        testProperty ("arranger.areEffectTracksVisible", arranger.areEffectTracksVisible (), true, false, true);
+    }
+
+    // Test Mixer properties
+    
+    if (TEST_MIXER)
+    {
+        var mixer = host.createMixer ();
+        assertNotNull ("Mixer not created.", mixer);
+        
+        testProperty ("mixer.isClipLauncherSectionVisible", mixer.isClipLauncherSectionVisible (), true, false, true);
+        testProperty ("mixer.isCrossFadeSectionVisible", mixer.isCrossFadeSectionVisible (), false, false, true);
+        testProperty ("mixer.isDeviceSectionVisible", mixer.isDeviceSectionVisible (), true, false, true);
+        testProperty ("mixer.isIoSectionVisible", mixer.isIoSectionVisible (), true, false, true);
+        testProperty ("mixer.isMeterSectionVisible", mixer.isMeterSectionVisible (), false, false, true);
+        testProperty ("mixer.isSendSectionVisible", mixer.isSendSectionVisible (), true, false, true);
+    }
+
     // Test CursorDevice properties
     
     var cursorDevice = host.createEditorCursorDevice (NUM_SENDS);
     assertNotNull ("Cursor Device not created.", cursorDevice);
-    var remoteControls = cursorDevice.createCursorRemoteControlsPage (NUM_PARAMS);
-    assertNotNull ("Remote controls not created.", remoteControls);
-    var siblings = cursorDevice.createSiblingsDeviceBank (NUM_DEVICES_IN_BANK);
-    assertNotNull ("Siblings device bank not created.", siblings);
 
     if (TEST_CURSOR_DEVICE)
     {
@@ -55,6 +96,9 @@ function init ()
 
     if (TEST_REMOTE_CONTROLS)
     {
+        var remoteControls = cursorDevice.createCursorRemoteControlsPage (NUM_PARAMS);
+        assertNotNull ("Remote controls not created.", remoteControls);
+        
         testProperty ("remoteControls.hasPrevious", remoteControls.hasPrevious (), false);
         testProperty ("remoteControls.hasNext", remoteControls.hasNext (), true);
         testProperty ("remoteControls.selectedPageIndex", remoteControls.selectedPageIndex (), 0, 0, 8, 5);
@@ -73,6 +117,9 @@ function init ()
 
     if (TEST_DEVICE_SIBLINGS)
     {
+        var siblings = cursorDevice.createSiblingsDeviceBank (NUM_DEVICES_IN_BANK);
+        assertNotNull ("Siblings device bank not created.", siblings);
+    
         for (var i = 0; i < NUM_DEVICES_IN_BANK; i++)
             testProperty ("siblings.getDevice (" + i + ").name", siblings.getDevice (i).name (), SIBLINGS_VALUES[i].name);
     }
