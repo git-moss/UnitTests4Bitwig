@@ -2,6 +2,18 @@
 // (c) 2017
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
+const BOOLEAN_OPTS = new MultiResult ([ false, true ]);
+
+function testBooleanProperty (propertyName, property)
+{
+    testProperty (propertyName, property, BOOLEAN_OPTS);
+}
+
+function testSettableBooleanProperty (propertyName, property)
+{
+    testProperty (propertyName, property, BOOLEAN_OPTS, false, true);
+}
+
 /**
  * Test Value and SettableValue interfaces.
  */

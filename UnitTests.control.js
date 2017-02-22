@@ -34,6 +34,7 @@ const SIBLINGS_VALUES = [ { name: "Polysynth" }, { name: "" } ]
 var properties = [];
 var scheduler = [];
 
+
 function init ()
 {
     println ("----------------------------------------------------------------------");
@@ -45,7 +46,7 @@ function init ()
         var application = host.createApplication ();
         assertNotNull ("Application not created.", application);
         
-        testProperty ("application.hasActiveEngine", application.hasActiveEngine (), true, false, true);
+        testSettableBooleanProperty ("application.hasActiveEngine", application.hasActiveEngine ());
         testProperty ("application.projectName", application.projectName (), "UnitTestsProject");
         testProperty ("application.panelLayout", application.panelLayout (), new MultiResult ([ "ARRANGE", "MIX", "EDIT", "PLAY" ]));
         testProperty ("application.displayProfile", application.displayProfile (), new MultiResult ([ "Single Display (Small)", "Single Display (Large)", "Dual Display (Studio)", "Dual Display (Arranger/Mixer)", "Dual Display (Master/Detail)", "Triple Display", "Tablet" ]));
@@ -56,13 +57,13 @@ function init ()
     if (TEST_ARRANGER)
     {
         var arranger = host.createArranger ();
-        testProperty ("arranger.areCueMarkersVisible", arranger.areCueMarkersVisible (), false, false, true);
-        testProperty ("arranger.isPlaybackFollowEnabled", arranger.isPlaybackFollowEnabled (), true, false, true);
-        testProperty ("arranger.hasDoubleRowTrackHeight", arranger.hasDoubleRowTrackHeight (), true, false, true);
-        testProperty ("arranger.isClipLauncherVisible", arranger.isClipLauncherVisible (), true, false, true);
-        testProperty ("arranger.isTimelineVisible", arranger.isTimelineVisible (), true, false, true);
-        testProperty ("arranger.isIoSectionVisible", arranger.isIoSectionVisible (), false, false, true);
-        testProperty ("arranger.areEffectTracksVisible", arranger.areEffectTracksVisible (), true, false, true);
+        testSettableBooleanProperty ("arranger.areCueMarkersVisible", arranger.areCueMarkersVisible ());
+        testSettableBooleanProperty ("arranger.isPlaybackFollowEnabled", arranger.isPlaybackFollowEnabled ());
+        testSettableBooleanProperty ("arranger.hasDoubleRowTrackHeight", arranger.hasDoubleRowTrackHeight ());
+        testSettableBooleanProperty ("arranger.isClipLauncherVisible", arranger.isClipLauncherVisible ());
+        testSettableBooleanProperty ("arranger.isTimelineVisible", arranger.isTimelineVisible ());
+        testSettableBooleanProperty ("arranger.isIoSectionVisible", arranger.isIoSectionVisible ());
+        testSettableBooleanProperty ("arranger.areEffectTracksVisible", arranger.areEffectTracksVisible ());
     }
 
     // Test Mixer properties
@@ -72,12 +73,12 @@ function init ()
         var mixer = host.createMixer ();
         assertNotNull ("Mixer not created.", mixer);
         
-        testProperty ("mixer.isClipLauncherSectionVisible", mixer.isClipLauncherSectionVisible (), true, false, true);
-        testProperty ("mixer.isCrossFadeSectionVisible", mixer.isCrossFadeSectionVisible (), false, false, true);
-        testProperty ("mixer.isDeviceSectionVisible", mixer.isDeviceSectionVisible (), true, false, true);
-        testProperty ("mixer.isIoSectionVisible", mixer.isIoSectionVisible (), true, false, true);
-        testProperty ("mixer.isMeterSectionVisible", mixer.isMeterSectionVisible (), false, false, true);
-        testProperty ("mixer.isSendSectionVisible", mixer.isSendSectionVisible (), true, false, true);
+        testSettableBooleanProperty ("mixer.isClipLauncherSectionVisible", mixer.isClipLauncherSectionVisible ());
+        testSettableBooleanProperty ("mixer.isCrossFadeSectionVisible", mixer.isCrossFadeSectionVisible ());
+        testSettableBooleanProperty ("mixer.isDeviceSectionVisible", mixer.isDeviceSectionVisible ());
+        testSettableBooleanProperty ("mixer.isIoSectionVisible", mixer.isIoSectionVisible ());
+        testSettableBooleanProperty ("mixer.isMeterSectionVisible", mixer.isMeterSectionVisible ());
+        testSettableBooleanProperty ("mixer.isSendSectionVisible", mixer.isSendSectionVisible ());
     }
     
     if (TEST_TRANSPORT)
@@ -85,21 +86,19 @@ function init ()
         var transport = host.createTransport ();
         assertNotNull ("Transport not created.", transport);
         
-        var booleanOpts = new MultiResult ([ false, true ]);
-        
-        testProperty ("transport.isPlaying", transport.isPlaying (), booleanOpts, false, true);
-        testProperty ("transport.isArrangerRecordEnabled", transport.isArrangerRecordEnabled (), booleanOpts, false, true);
-        testProperty ("transport.isArrangerOverdubEnabled", transport.isArrangerOverdubEnabled (), booleanOpts, false, true);
-        testProperty ("transport.isClipLauncherOverdubEnabled", transport.isClipLauncherOverdubEnabled (), booleanOpts, false, true);
+        testSettableBooleanProperty ("transport.isPlaying", transport.isPlaying ());
+        testSettableBooleanProperty ("transport.isArrangerRecordEnabled", transport.isArrangerRecordEnabled ());
+        testSettableBooleanProperty ("transport.isArrangerOverdubEnabled", transport.isArrangerOverdubEnabled ());
+        testSettableBooleanProperty ("transport.isClipLauncherOverdubEnabled", transport.isClipLauncherOverdubEnabled ());
         testProperty ("transport.automationWriteMode", transport.automationWriteMode (), new MultiResult ([ "latch", "touch", "write" ]), "latch", "touch", "write");
-        testProperty ("transport.isArrangerAutomationWriteEnabled", transport.isArrangerAutomationWriteEnabled (), booleanOpts, false, true);
-        testProperty ("transport.isClipLauncherAutomationWriteEnabled", transport.isClipLauncherAutomationWriteEnabled (), booleanOpts, false, true);
-        testProperty ("transport.isAutomationOverrideActive", transport.isAutomationOverrideActive (), booleanOpts);
-        testProperty ("transport.isArrangerLoopEnabled", transport.isArrangerLoopEnabled (), booleanOpts, false, true);
-        testProperty ("transport.isPunchInEnabled", transport.isPunchInEnabled (), booleanOpts, false, true);
-        testProperty ("transport.isPunchOutEnabled", transport.isPunchOutEnabled (), booleanOpts, false, true);
-        testProperty ("transport.isMetronomeEnabled", transport.isMetronomeEnabled (), booleanOpts, false, true);
-        testProperty ("transport.isMetronomeTickPlaybackEnabled", transport.isMetronomeTickPlaybackEnabled (), booleanOpts, false, true);
+        testSettableBooleanProperty ("transport.isArrangerAutomationWriteEnabled", transport.isArrangerAutomationWriteEnabled ());
+        testSettableBooleanProperty ("transport.isClipLauncherAutomationWriteEnabled", transport.isClipLauncherAutomationWriteEnabled ());
+        testBooleanProperty ("transport.isAutomationOverrideActive", transport.isAutomationOverrideActive ());
+        testSettableBooleanProperty ("transport.isArrangerLoopEnabled", transport.isArrangerLoopEnabled ());
+        testSettableBooleanProperty ("transport.isPunchInEnabled", transport.isPunchInEnabled ());
+        testSettableBooleanProperty ("transport.isPunchOutEnabled", transport.isPunchOutEnabled ());
+        testSettableBooleanProperty ("transport.isMetronomeEnabled", transport.isMetronomeEnabled ());
+        testSettableBooleanProperty ("transport.isMetronomeTickPlaybackEnabled", transport.isMetronomeTickPlaybackEnabled ());
         
         // TODO
     }
@@ -113,14 +112,14 @@ function init ()
 
         if (TEST_CURSOR_DEVICE)
         {
-            testProperty ("cursorDevice.isEnabled", cursorDevice.isEnabled (), true, false, true);
+            testSettableBooleanProperty ("cursorDevice.isEnabled", cursorDevice.isEnabled ());
             testProperty ("cursorDevice.isPlugin", cursorDevice.isPlugin (), false, false, true);
             testProperty ("cursorDevice.position", cursorDevice.position (), 0);
             testProperty ("cursorDevice.name", cursorDevice.name (), "Polysynth");
-            testProperty ("cursorDevice.hasPrevious", cursorDevice.hasPrevious (), false, false, true);
-            testProperty ("cursorDevice.hasNext", cursorDevice.hasNext (), false, false, true);
-            testProperty ("cursorDevice.isExpanded", cursorDevice.isExpanded (), true, false, true);
-            testProperty ("cursorDevice.isRemoteControlsSectionVisible", cursorDevice.isRemoteControlsSectionVisible (), false, false, true);
+            testBooleanProperty ("cursorDevice.hasPrevious", cursorDevice.hasPrevious ());
+            testBooleanProperty ("cursorDevice.hasNext", cursorDevice.hasNext ());
+            testSettableBooleanProperty ("cursorDevice.isExpanded", cursorDevice.isExpanded ());
+            testSettableBooleanProperty ("cursorDevice.isRemoteControlsSectionVisible", cursorDevice.isRemoteControlsSectionVisible ());
             testProperty ("cursorDevice.isWindowOpen", cursorDevice.isWindowOpen (), false, false, false);
             testProperty ("cursorDevice.isNested", cursorDevice.isNested (), false);
             testProperty ("cursorDevice.hasDrumPads", cursorDevice.hasDrumPads (), false);
@@ -133,8 +132,8 @@ function init ()
             var remoteControls = cursorDevice.createCursorRemoteControlsPage (NUM_PARAMS);
             assertNotNull ("Remote controls not created.", remoteControls);
             
-            testProperty ("remoteControls.hasPrevious", remoteControls.hasPrevious (), false);
-            testProperty ("remoteControls.hasNext", remoteControls.hasNext (), true);
+            testBooleanProperty ("remoteControls.hasPrevious", remoteControls.hasPrevious ());
+            testBooleanProperty ("remoteControls.hasNext", remoteControls.hasNext ());
             testProperty ("remoteControls.selectedPageIndex", remoteControls.selectedPageIndex (), 0, 0, 8, 5);
             testProperty ("remoteControls.pageNames", remoteControls.pageNames ());
             for (var i = 0; i < NUM_PARAMS; i++)
