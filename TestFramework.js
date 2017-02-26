@@ -3,21 +3,62 @@
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
 const BOOLEAN_OPTS = new MultiResult ([ false, true ]);
+const LOG = new Logger ();
 
-function testBooleanProperty (propertyName, property)
+/**
+ * Note that Value is actually also the SettableValue interface and only different in the documentation!
+ */
+function testBooleanProperty (propertyName, property, defaultValue)
 {
-    testProperty (propertyName, property, BOOLEAN_OPTS);
+    var propertyObject = enableProperty (propertyName, property, defaultValue ? defaultValue : BOOLEAN_OPTS);
+    delay (delayedTestBooleanProperty, [ propertyObject ]); 
 }
 
-function testSettableBooleanProperty (propertyName, property)
+function testSettableBooleanProperty (propertyName, property, defaultValue, minValue, maxValue)
 {
-    testProperty (propertyName, property, BOOLEAN_OPTS, false, true);
+    var propertyObject = enableProperty (propertyName, property, typeof (defaultValue) == 'undefined' ? BOOLEAN_OPTS : defaultValue, typeof (minValue) == 'undefined' ? false : minValue, typeof (maxValue) == 'undefined' ? true : maxValue);
+    delay (delayedTestBooleanProperty, [ propertyObject ]); 
+}
+
+function testStringProperty (propertyName, property, defaultValue, minValue, maxValue, testValue)
+{
+    var propertyObject = enableProperty (propertyName, property, defaultValue, minValue, maxValue, testValue);
+    delay (delayedTestProperty, [ propertyObject, '']);
+}
+
+function testIntegerProperty (propertyName, property, defaultValue, minValue, maxValue, testValue)
+{
+    var propertyObject = enableProperty (propertyName, property, defaultValue, minValue, maxValue, testValue);
+    delay (delayedTestProperty, [ propertyObject, -1]);
+}
+
+function testFloatProperty (propertyName, property, defaultValue, minValue, maxValue, testValue)
+{
+    var propertyObject = enableProperty (propertyName, property, defaultValue, minValue, maxValue, testValue);
+    delay (delayedTestProperty, [ propertyObject, 0]);
+}
+
+function testEnumProperty (propertyName, property, defaultValueList, minValue, maxValue, testValue)
+{
+    var propertyObject = enableProperty (propertyName, property, defaultValueList, minValue, maxValue, testValue);
+    delay (delayedTestProperty, [ propertyObject, defaultValueList.getDefaultValue ()]);
 }
 
 /**
  * Test Value and SettableValue interfaces.
  */
 function testProperty (propertyName, property, defaultValue, minValue, maxValue, testValue)
+{
+    var propertyObject = enableProperty (propertyName, property, defaultValue, minValue, maxValue, testValue);
+    delay (delayedTestProperty, [ propertyObject ]);
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Private
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+function enableProperty (propertyName, property, defaultValue, minValue, maxValue, testValue)
 {
     if (TEST_PROPERTY_GETTER)
     {
@@ -30,102 +71,121 @@ function testProperty (propertyName, property, defaultValue, minValue, maxValue,
         println ("Observing property " + propertyName);
         property.addValueObserver (doObject (propertyObject, function (value) { this.observed = value; }));
     }
-    properties.push (propertyObject);
+    return propertyObject;
 }
 
-function testProperties ()
+function delayedTestBooleanProperty (propertyObject)
 {
-    for (var i = 0; i < properties.length; i++)
-        testPropertyDelayed (properties[i]);
-    executeScheduler ();
+    var value = delayedTestPropertyDefaultValue (propertyObject);
+
+    // Note that Value is actually also the SettableValue interface and only different in the documentation!
+    // Therefore, you need to give no value for minValue to cancel here
+    if (typeof (propertyObject.minValue) == "undefined")
+    {
+        scheduleFunction (logInfo, [ "Property is readonly. Done." ]);
+        return;
+    }
+        
+    // Don't toggle if not possible
+    if (propertyObject.minValue === propertyObject.maxValue)
+    {
+        scheduleFunction (logInfo, [ "Property can't be toggled. Done." ]);
+        return;
+    }
+    
+    // Test if toggling a boolean value works
+    scheduleFunction (function (propertyObject) { propertyObject.property.toggle (); }, [ propertyObject ]);
+    scheduleFunction (assertEqualsProperty, [ "Toggled", !value, propertyObject ]);
+    
+    delayedTestPropertyMinMaxValues (propertyObject, value);
+    delayedResetValue (propertyObject.property, value);
+    delayedDisableValueUpdates (propertyObject.property);
+    
+    // Retest, but value must not update
+    // Test if toggling a boolean value works
+    scheduleFunction (function (propertyObject) { propertyObject.property.toggle (); }, [ propertyObject ]);
+    // false is retrieved from getter when off
+    scheduleFunction (assertEqualsProperty, [ "(Off) Toggled", false, propertyObject ]);
+
+    delayedEnableValueUpdates (propertyObject.property);
+
+    // Now the value update must fire again!
+    scheduleFunction (assertEqualsProperty, [ "(On) Toggled", !value, propertyObject ]);
+    
+    delayedResetValue (propertyObject.property, value);
 }
 
-function testPropertyDelayed (propertyObject)
+function delayedTestProperty (propertyObject, expectedDisabledValue)
+{
+    var value = delayedTestPropertyDefaultValue (propertyObject);
+
+    if (!propertyObject.property.set)
+    {
+        scheduleFunction (logInfo, [ "Property is readonly. Done." ]);
+        return;
+    }
+        
+    if (typeof (propertyObject.minValue) == "undefined")
+        return;
+    
+    // Test setting to a test value
+    scheduleFunction (function (propertyObject, value) { propertyObject.property.set (value); }, [ propertyObject, propertyObject.testValue ]);
+    scheduleFunction (assertEqualsProperty, [ "Test", propertyObject.testValue, propertyObject ]);
+    
+    delayedTestPropertyMinMaxValues (propertyObject, value);
+    delayedResetValue (propertyObject.property, value);
+    delayedDisableValueUpdates (propertyObject.property);
+    
+    // Retest, but now value must not update
+    scheduleFunction (function (propertyObject, value) { propertyObject.property.set (value); }, [ propertyObject, propertyObject.testValue ]);
+    scheduleFunction (assertEqualsProperty, [ "(Off) Test", expectedDisabledValue, propertyObject ]);
+
+    delayedEnableValueUpdates (propertyObject.property);
+
+    // Don't toggle if not possible
+    if (propertyObject.minValue !== propertyObject.maxValue)
+    {
+        // Now the value update must fire!
+        scheduleFunction (assertEqualsProperty, [ "(On) Test", propertyObject.testValue, propertyObject ]);
+    }
+    
+    delayedResetValue (propertyObject.property, value);
+}
+
+function delayedTestPropertyDefaultValue (propertyObject)
 {
     scheduleFunction (println, [ "Test property " + propertyObject.name ]);
     
     // Test if the expected default value ist set
     var value = propertyObject.property.get ();
     scheduleFunction (assertEquals, [ "Default", propertyObject.defaultValue, value ]);
-    
-    if (propertyObject.property.set)
-    {
-        if (typeof (propertyObject.minValue) == "undefined")
-        {
-            scheduleFunction (errorln, [ PAD + "There are no test values given. Add them or implement the Property readonly." ]);
-            return;
-        }
-        
-        if (propertyObject.property.toggle)
-        {
-            // Don't toggle if not possible
-            if (propertyObject.minValue !== propertyObject.maxValue)
-            {
-                // Test if toggling a boolean value works
-                scheduleFunction (function (propertyObject) { propertyObject.property.toggle (); }, [ propertyObject ]);
-                scheduleFunction (assertEqualsProperty, [ "Toggled", !value, propertyObject ]);
-            }
-        }
-        else
-        {
-            // Test setting to a test value
-            scheduleFunction (function (propertyObject, value) { propertyObject.property.set (value); }, [ propertyObject, propertyObject.testValue ]);
-            scheduleFunction (assertEqualsProperty, [ "Test", propertyObject.testValue, propertyObject ]);
-        }
-        
-        // Test setting to a 'minimum' value
-        scheduleFunction (function (propertyObject, value) { propertyObject.property.set (value); }, [ propertyObject, propertyObject.minValue ]);
-        scheduleFunction (assertEqualsProperty, [ "Min", propertyObject.minValue, propertyObject ]);
+    return value;
+}
 
-        // Test setting to a 'maximum' value
-        scheduleFunction (function (propertyObject, value) { propertyObject.property.set (value); }, [ propertyObject, propertyObject.maxValue ]);
-        scheduleFunction (assertEqualsProperty, [ "Max", propertyObject.maxValue, propertyObject ]);
+function delayedTestPropertyMinMaxValues (propertyObject, defaultValue)
+{
+    // Test setting to a 'minimum' value
+    scheduleFunction (function (propertyObject, value) { propertyObject.property.set (value); }, [ propertyObject, propertyObject.minValue ]);
+    scheduleFunction (assertEqualsProperty, [ "Min", propertyObject.minValue, propertyObject ]);
 
-        // Reset to original value
-        scheduleFunction (function (propertyObject, value) { propertyObject.property.set (value); }, [ propertyObject, value ]);
-        scheduleFunction (assertEqualsProperty, [ "Reset to default", value, propertyObject ]);
+    // Test setting to a 'maximum' value
+    scheduleFunction (function (propertyObject, value) { propertyObject.property.set (value); }, [ propertyObject, propertyObject.maxValue ]);
+    scheduleFunction (assertEqualsProperty, [ "Max", propertyObject.maxValue, propertyObject ]);
+}
 
-        // Turn off value updates
-        scheduleFunction (function (property) { property.setIsSubscribed (false); }, [ propertyObject.property ]);
-        
-        // Retest, but value must not update
-        if (propertyObject.property.toggle)
-        {
-            // Don't toggle if not possible
-            if (propertyObject.minValue !== propertyObject.maxValue)
-            {
-                // Test if toggling a boolean value works
-                scheduleFunction (function (propertyObject) { propertyObject.property.toggle (); }, [ propertyObject ]);
-                // false is retrieved from getter when off
-                scheduleFunction (assertEqualsProperty, [ "(Off) Toggled", false, propertyObject ]);
-            }
-        }
-        else
-        {
-            // Test setting to a test value
-            scheduleFunction (function (propertyObject, value) { propertyObject.property.set (value); }, [ propertyObject, propertyObject.testValue ]);
-            // -1 (integer), 0 (float) or '' is retrieved from getter when off
-            scheduleFunction (assertEqualsProperty, [ "(Off) Test", typeof (value) == "string" ? '' : new MultiResult ([-1, 0]), propertyObject ]);
-        }
+function delayedDisableValueUpdates (property)
+{
+    scheduleFunction (function (property) { property.setIsSubscribed (false); }, [ property ]);
+}
 
-        // Turn on value updates
-        scheduleFunction (function (property) { property.setIsSubscribed (true); }, [ propertyObject.property ]);
+function delayedEnableValueUpdates (property)
+{
+    scheduleFunction (function (property) { property.setIsSubscribed (true); }, [ property ]);
+}
 
-        // Don't toggle if not possible
-        if (propertyObject.minValue !== propertyObject.maxValue)
-        {
-            // Now the value update must fire!
-            if (propertyObject.property.toggle)
-                scheduleFunction (assertEqualsProperty, [ "(On) Toggled", !value, propertyObject ]);
-            else
-                scheduleFunction (assertEqualsProperty, [ "(On) Test", propertyObject.testValue, propertyObject ]);
-        }
-        
-        // Reset to original value
-        scheduleFunction (function (propertyObject, value) { propertyObject.property.set (value); }, [ propertyObject, value ]);
-    }
-    else
-        scheduleFunction (println, [ PAD + "Property is readonly. Done." ]);
+function delayedResetValue (property, value)
+{
+    scheduleFunction (function (property, value) { property.set (value); }, [ property, value ]);
 }
 
 function assertEqualsProperty (name, expectedValue, propertyObject)
@@ -141,38 +201,39 @@ function assertEquals (name, expectedValue, actualValue)
     // Check for several possible result values
     if (expectedValue instanceof MultiResult)
     {
-        if (expectedValue.checkResult (actualValue))
-            println (PAD + name + " value should be in '" + expectedValue.printOptions () + "', OK.");
-        else
-            errorln (PAD + name + " value should be '" + expectedValue.printOptions () + "' but was '" + actualValue + "'.");
+        LOG.equals (name, expectedValue.checkResult (actualValue), expectedValue.printOptions (), actualValue);
         return;
     }
     
-    if (typeof (actualValue) == "object")
+    // Check for array
+    if (typeof (actualValue) == "object" && typeof (expectedValue) == "undefined" && actualValue.length)
     {
-        // Check for array
-        if (typeof (expectedValue) == "undefined" && actualValue.length)
+        // Only check that it is not empty
+        if (actualValue.length > 0)
         {
-            // Only check that it is not empty
-            if (actualValue.length > 0)
-            {
-                println (PAD + name + " value should be a non-empty array, OK.");
-                return;
-            }
-            // Fall through for not supported object cases
+            LOG.info ("Value should be a non-empty array, OK.");
+            return;
         }
+        // Fall through for not supported object cases
     }
-    
-    if (expectedValue === actualValue)
-        println (PAD + name + " value should be '" + expectedValue + "', OK.");
-    else
-        errorln (PAD + name + " value should be '" + expectedValue + "' but was '" + actualValue + "'.");
+
+    LOG.equals (name, expectedValue === actualValue, expectedValue, actualValue);
 }
 
 function assertNotNull (message, object)
 {
     if (object == null)
-        errorln (message);
+        LOG.error (message);
+}
+
+function logError (message)
+{
+    LOG.error (message);
+}
+
+function logInfo (message)
+{
+    LOG.info (message);
 }
 
 function scheduleFunction (f, args)
@@ -184,14 +245,20 @@ function executeScheduler ()
 {
     if (scheduler.length == 0)
     {
-        println ("----------------------------------------------------------------------");
-        println ("Finished.");
+        LOG.finish ();
         return;
     }
     delay (function ()
     {
         var exec = scheduler.shift ();
-        exec.f.apply (this, exec.args);
+        try
+        {
+            exec.f.apply (this, exec.args);
+        }
+        catch (ex)
+        {
+            LOG.error (ex);
+        }
         executeScheduler ();
     });
 }
@@ -210,9 +277,4 @@ function doObject (object, f)
     {
         f.apply (object, arguments);
     };
-}
-
-function errorln (message)
-{
-    host.errorln (message);
 }

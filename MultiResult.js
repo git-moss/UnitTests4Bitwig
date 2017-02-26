@@ -17,6 +17,11 @@ MultiResult.prototype.checkResult = function (result)
     return false;
 };
 
+MultiResult.prototype.getDefaultValue = function ()
+{
+    return this.options[0];
+}
+
 MultiResult.prototype.printOptions = function ()
 {
     return "{ " + this.options.join() + " }";

@@ -4,6 +4,7 @@
 
 loadAPI(2);
 load ("MultiResult.js");
+load ("Logger.js");
 load ("TestFramework.js");
 
 host.defineController ("Moss", "Unit Tests", "1.0", "423793DD-89BA-49DC-9E6E-5C61FDA19E85", "Jürgen Moßgraber");
@@ -25,19 +26,17 @@ const NUM_DEVICES_IN_BANK = 2;
 
 const ANSWER_DELAY = 100;
 
-const PAD = "  - ";
 const PARAMETER_VALUES = [ 
     { exists: true, name: "Pitch", value: 0.5, modulatedValue: 0.5, displayedValue: "+0.000 st" },
     { exists: true, name: "Shape", value: 0.5, modulatedValue: 0.5, displayedValue: "0.000 %" } ];
 const SIBLINGS_VALUES = [ { name: "Polysynth" }, { name: "" } ]
 
-var properties = [];
 var scheduler = [];
 
 
 function init ()
 {
-    println ("----------------------------------------------------------------------");
+    LOG.infoLine ();
     
     // Test Application properties
     
@@ -46,7 +45,7 @@ function init ()
         var application = host.createApplication ();
         assertNotNull ("Application not created.", application);
         
-        testSettableBooleanProperty ("application.hasActiveEngine", application.hasActiveEngine ());
+        testBooleanProperty ("application.hasActiveEngine", application.hasActiveEngine ());
         testProperty ("application.projectName", application.projectName (), "UnitTestsProject");
         testProperty ("application.panelLayout", application.panelLayout (), new MultiResult ([ "ARRANGE", "MIX", "EDIT", "PLAY" ]));
         testProperty ("application.displayProfile", application.displayProfile (), new MultiResult ([ "Single Display (Small)", "Single Display (Large)", "Dual Display (Studio)", "Dual Display (Arranger/Mixer)", "Dual Display (Master/Detail)", "Triple Display", "Tablet" ]));
@@ -90,7 +89,7 @@ function init ()
         testSettableBooleanProperty ("transport.isArrangerRecordEnabled", transport.isArrangerRecordEnabled ());
         testSettableBooleanProperty ("transport.isArrangerOverdubEnabled", transport.isArrangerOverdubEnabled ());
         testSettableBooleanProperty ("transport.isClipLauncherOverdubEnabled", transport.isClipLauncherOverdubEnabled ());
-        testProperty ("transport.automationWriteMode", transport.automationWriteMode (), new MultiResult ([ "latch", "touch", "write" ]), "latch", "touch", "write");
+        testEnumProperty ("transport.automationWriteMode", transport.automationWriteMode (), new MultiResult ([ "latch", "touch", "write" ]), "latch", "touch", "write");
         testSettableBooleanProperty ("transport.isArrangerAutomationWriteEnabled", transport.isArrangerAutomationWriteEnabled ());
         testSettableBooleanProperty ("transport.isClipLauncherAutomationWriteEnabled", transport.isClipLauncherAutomationWriteEnabled ());
         testBooleanProperty ("transport.isAutomationOverrideActive", transport.isAutomationOverrideActive ());
@@ -99,8 +98,6 @@ function init ()
         testSettableBooleanProperty ("transport.isPunchOutEnabled", transport.isPunchOutEnabled ());
         testSettableBooleanProperty ("transport.isMetronomeEnabled", transport.isMetronomeEnabled ());
         testSettableBooleanProperty ("transport.isMetronomeTickPlaybackEnabled", transport.isMetronomeTickPlaybackEnabled ());
-        
-        // TODO
     }
 
     // Test CursorDevice properties
@@ -113,18 +110,18 @@ function init ()
         if (TEST_CURSOR_DEVICE)
         {
             testSettableBooleanProperty ("cursorDevice.isEnabled", cursorDevice.isEnabled ());
-            testProperty ("cursorDevice.isPlugin", cursorDevice.isPlugin (), false, false, true);
-            testProperty ("cursorDevice.position", cursorDevice.position (), 0);
-            testProperty ("cursorDevice.name", cursorDevice.name (), "Polysynth");
+            testBooleanProperty ("cursorDevice.isPlugin", cursorDevice.isPlugin (), false, false, true);
+            testIntegerProperty ("cursorDevice.position", cursorDevice.position (), 0);
+            testStringProperty ("cursorDevice.name", cursorDevice.name (), "Polysynth");
             testBooleanProperty ("cursorDevice.hasPrevious", cursorDevice.hasPrevious ());
             testBooleanProperty ("cursorDevice.hasNext", cursorDevice.hasNext ());
             testSettableBooleanProperty ("cursorDevice.isExpanded", cursorDevice.isExpanded ());
             testSettableBooleanProperty ("cursorDevice.isRemoteControlsSectionVisible", cursorDevice.isRemoteControlsSectionVisible ());
-            testProperty ("cursorDevice.isWindowOpen", cursorDevice.isWindowOpen (), false, false, false);
-            testProperty ("cursorDevice.isNested", cursorDevice.isNested (), false);
-            testProperty ("cursorDevice.hasDrumPads", cursorDevice.hasDrumPads (), false);
-            testProperty ("cursorDevice.hasLayers", cursorDevice.hasLayers (), false);
-            testProperty ("cursorDevice.hasSlots", cursorDevice.hasSlots (), true);
+            testSettableBooleanProperty ("cursorDevice.isWindowOpen", cursorDevice.isWindowOpen (), false, false, false);
+            testBooleanProperty ("cursorDevice.isNested", cursorDevice.isNested (), false);
+            testBooleanProperty ("cursorDevice.hasDrumPads", cursorDevice.hasDrumPads (), false);
+            testBooleanProperty ("cursorDevice.hasLayers", cursorDevice.hasLayers (), false);
+            testBooleanProperty ("cursorDevice.hasSlots", cursorDevice.hasSlots (), true);
         }
 
         if (TEST_REMOTE_CONTROLS)
@@ -134,17 +131,17 @@ function init ()
             
             testBooleanProperty ("remoteControls.hasPrevious", remoteControls.hasPrevious ());
             testBooleanProperty ("remoteControls.hasNext", remoteControls.hasNext ());
-            testProperty ("remoteControls.selectedPageIndex", remoteControls.selectedPageIndex (), 0, 0, 8, 5);
+            testIntegerProperty ("remoteControls.selectedPageIndex", remoteControls.selectedPageIndex (), 0, 0, 8, 5);
             testProperty ("remoteControls.pageNames", remoteControls.pageNames ());
             for (var i = 0; i < NUM_PARAMS; i++)
             {
                 var p = remoteControls.getParameter (i);
                 var PV = PARAMETER_VALUES[i];
-                testProperty ("p.exists (" + i + ")", p.exists (), PV.exists, true);
-                testProperty ("p.name (" + i + ")", p.name (), PV.name, "Parameter Name 1", "Parameter Name 2", "Parameter Name 3");
-                testProperty ("p.value (" + i + ")", p.value (), PV.value, 0, 1, 0.6);
-                testProperty ("p.modulatedValue (" + i + ")", p.modulatedValue (), PV.modulatedValue);
-                testProperty ("p.displayedValue (" + i + ")", p.displayedValue (), PV.displayedValue);
+                testBooleanProperty ("p.exists (" + i + ")", p.exists (), PV.exists, true);
+                testStringProperty ("p.name (" + i + ")", p.name (), PV.name, "Parameter Name 1", "Parameter Name 2", "Parameter Name 3");
+                testFloatProperty ("p.value (" + i + ")", p.value (), PV.value, 0, 1, 0.6);
+                testFloatProperty ("p.modulatedValue (" + i + ")", p.modulatedValue (), PV.modulatedValue);
+                testStringProperty ("p.displayedValue (" + i + ")", p.displayedValue (), PV.displayedValue);
             }
         }
 
@@ -154,15 +151,13 @@ function init ()
             assertNotNull ("Siblings device bank not created.", siblings);
         
             for (var i = 0; i < NUM_DEVICES_IN_BANK; i++)
-                testProperty ("siblings.getDevice (" + i + ").name", siblings.getDevice (i).name (), SIBLINGS_VALUES[i].name);
+                testStringProperty ("siblings.getDevice (" + i + ").name", siblings.getDevice (i).name (), SIBLINGS_VALUES[i].name);
         }
-        
-        // TODO Test layers and drum pads
     }
     
-    println ("----------------------------------------------------------------------");
+    LOG.infoLine ();
     
-    delay (testProperties);
+    delay (executeScheduler);
 }
 
 function exit()
