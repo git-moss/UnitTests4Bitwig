@@ -8,49 +8,76 @@ const LOG = new Logger ();
 /**
  * Note that Value is actually also the SettableValue interface and only different in the documentation!
  */
-function testBooleanProperty (propertyName, property, defaultValue)
+function testBooleanValue (propertyName, property, defaultValue)
 {
-    var propertyObject = enableProperty (propertyName, property, defaultValue ? defaultValue : BOOLEAN_OPTS);
-    delay (delayedTestBooleanProperty, [ propertyObject ]); 
+    var propertyObject = enableValue (propertyName, property, defaultValue ? defaultValue : BOOLEAN_OPTS);
+    delay (delayedTestBooleanValue, [ propertyObject ]); 
 }
 
-function testSettableBooleanProperty (propertyName, property, defaultValue, minValue, maxValue)
+function testSettableBooleanValue (propertyName, property, defaultValue, minValue, maxValue)
 {
-    var propertyObject = enableProperty (propertyName, property, typeof (defaultValue) == 'undefined' ? BOOLEAN_OPTS : defaultValue, typeof (minValue) == 'undefined' ? false : minValue, typeof (maxValue) == 'undefined' ? true : maxValue);
-    delay (delayedTestBooleanProperty, [ propertyObject ]); 
+    var propertyObject = enableValue (propertyName, property, typeof (defaultValue) == 'undefined' ? BOOLEAN_OPTS : defaultValue, typeof (minValue) == 'undefined' ? false : minValue, typeof (maxValue) == 'undefined' ? true : maxValue);
+    delay (delayedTestBooleanValue, [ propertyObject ]); 
 }
 
-function testStringProperty (propertyName, property, defaultValue, minValue, maxValue, testValue)
+function testStringValue (propertyName, property, defaultValue, minValue, maxValue, testValue)
 {
-    var propertyObject = enableProperty (propertyName, property, defaultValue, minValue, maxValue, testValue);
-    delay (delayedTestProperty, [ propertyObject, '']);
+    var propertyObject = enableValue (propertyName, property, defaultValue, minValue, maxValue, testValue);
+    delay (delayedTestValue, [ propertyObject, '']);
 }
 
-function testIntegerProperty (propertyName, property, defaultValue, minValue, maxValue, testValue)
+function testIntegerValue (propertyName, property, defaultValue, minValue, maxValue, testValue)
 {
-    var propertyObject = enableProperty (propertyName, property, defaultValue, minValue, maxValue, testValue);
-    delay (delayedTestProperty, [ propertyObject, -1]);
+    var propertyObject = enableValue (propertyName, property, defaultValue, minValue, maxValue, testValue);
+    delay (delayedTestValue, [ propertyObject, -1]);
 }
 
-function testFloatProperty (propertyName, property, defaultValue, minValue, maxValue, testValue)
+function testDoubleValue (propertyName, property, defaultValue, minValue, maxValue, testValue)
 {
-    var propertyObject = enableProperty (propertyName, property, defaultValue, minValue, maxValue, testValue);
-    delay (delayedTestProperty, [ propertyObject, 0]);
+    var propertyObject = enableValue (propertyName, property, defaultValue, minValue, maxValue, testValue);
+    delay (delayedTestValue, [ propertyObject, 0]);
+    return propertyObject;
 }
 
-function testEnumProperty (propertyName, property, defaultValueList, minValue, maxValue, testValue)
+function testEnumValue (propertyName, property, defaultValueList, minValue, maxValue, testValue)
 {
-    var propertyObject = enableProperty (propertyName, property, defaultValueList, minValue, maxValue, testValue);
-    delay (delayedTestProperty, [ propertyObject, defaultValueList.getDefaultValue ()]);
+    var propertyObject = enableValue (propertyName, property, defaultValueList, minValue, maxValue, testValue);
+    delay (delayedTestValue, [ propertyObject, defaultValueList.getDefaultValue ()]);
+}
+
+function testSettableRangedValue (propertyName, property, defaultValue, minValue, maxValue, testValue, defaultDisplayValue)
+{
+    testDoubleValue (propertyName, property, defaultValue, minValue, maxValue, testValue);
+    testStringValue (propertyName + ".displayedValue", property.displayedValue (), defaultDisplayValue);
+}
+
+function testSettableBeatTimeValue (propertyName, property, defaultValue, minValue, maxValue, testValue, expectedFormattedBeatTime)
+{
+    var propertyObject = testDoubleValue (propertyName, property, defaultValue, minValue, maxValue, testValue);
+    delay (delayedTestFormattedBeatTime, [ propertyObject, expectedFormattedBeatTime ]);    
+}
+
+function testTimeSignature (propertyName, property, defaultValue, minValue, maxValue, testValue)
+{
+    var propertyObject = enableValue (propertyName, property, defaultValue, minValue, maxValue, testValue);
+    delay (delayedTestValue, [ propertyObject, '4/4']);
+    
+}
+
+function testParameter (propertyName, property, defaultValue, minValue, maxValue, testValue, defaultDisplayValue)
+{
+    testSettableRangedValue (propertyName, property, defaultValue, minValue, maxValue, testValue, defaultDisplayValue);
+    
+    // TODO Test the other Parameter attributes
 }
 
 /**
  * Test Value and SettableValue interfaces.
  */
-function testProperty (propertyName, property, defaultValue, minValue, maxValue, testValue)
+function testValue (propertyName, property, defaultValue, minValue, maxValue, testValue)
 {
-    var propertyObject = enableProperty (propertyName, property, defaultValue, minValue, maxValue, testValue);
-    delay (delayedTestProperty, [ propertyObject ]);
+    var propertyObject = enableValue (propertyName, property, defaultValue, minValue, maxValue, testValue);
+    delay (delayedTestValue, [ propertyObject ]);
 }
 
 
@@ -58,7 +85,7 @@ function testProperty (propertyName, property, defaultValue, minValue, maxValue,
 // Private
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function enableProperty (propertyName, property, defaultValue, minValue, maxValue, testValue)
+function enableValue (propertyName, property, defaultValue, minValue, maxValue, testValue)
 {
     if (TEST_PROPERTY_GETTER)
     {
@@ -74,30 +101,35 @@ function enableProperty (propertyName, property, defaultValue, minValue, maxValu
     return propertyObject;
 }
 
-function delayedTestBooleanProperty (propertyObject)
+function delayedTestFormattedBeatTime (propertyObject, expectedFormattedBeatTime)
 {
-    var value = delayedTestPropertyDefaultValue (propertyObject);
+    scheduleFunction (assertEquals, [ propertyObject.name + ".getFormatted", expectedFormattedBeatTime, propertyObject.property.getFormatted () ]);    
+}
+
+function delayedTestBooleanValue (propertyObject)
+{
+    var value = delayedTestValueDefaultValue (propertyObject);
 
     // Note that Value is actually also the SettableValue interface and only different in the documentation!
     // Therefore, you need to give no value for minValue to cancel here
     if (typeof (propertyObject.minValue) == "undefined")
     {
-        scheduleFunction (logInfo, [ "Property is readonly. Done." ]);
+        scheduleFunction (logInfo, [ "Value is readonly. Done." ]);
         return;
     }
         
     // Don't toggle if not possible
     if (propertyObject.minValue === propertyObject.maxValue)
     {
-        scheduleFunction (logInfo, [ "Property can't be toggled. Done." ]);
+        scheduleFunction (logInfo, [ "Value can't be toggled. Done." ]);
         return;
     }
     
     // Test if toggling a boolean value works
     scheduleFunction (function (propertyObject) { propertyObject.property.toggle (); }, [ propertyObject ]);
-    scheduleFunction (assertEqualsProperty, [ "Toggled", !value, propertyObject ]);
+    scheduleFunction (assertEqualsValue, [ "Toggled", !value, propertyObject ]);
     
-    delayedTestPropertyMinMaxValues (propertyObject, value);
+    delayedTestValueMinMaxValues (propertyObject, value);
     delayedResetValue (propertyObject.property, value);
     delayedDisableValueUpdates (propertyObject.property);
     
@@ -105,23 +137,23 @@ function delayedTestBooleanProperty (propertyObject)
     // Test if toggling a boolean value works
     scheduleFunction (function (propertyObject) { propertyObject.property.toggle (); }, [ propertyObject ]);
     // false is retrieved from getter when off
-    scheduleFunction (assertEqualsProperty, [ "(Off) Toggled", false, propertyObject ]);
+    scheduleFunction (assertEqualsValue, [ "(Off) Toggled", false, propertyObject ]);
 
     delayedEnableValueUpdates (propertyObject.property);
 
     // Now the value update must fire again!
-    scheduleFunction (assertEqualsProperty, [ "(On) Toggled", !value, propertyObject ]);
+    scheduleFunction (assertEqualsValue, [ "(On) Toggled", !value, propertyObject ]);
     
     delayedResetValue (propertyObject.property, value);
 }
 
-function delayedTestProperty (propertyObject, expectedDisabledValue)
+function delayedTestValue (propertyObject, expectedDisabledValue)
 {
-    var value = delayedTestPropertyDefaultValue (propertyObject);
+    var value = delayedTestValueDefaultValue (propertyObject);
 
     if (!propertyObject.property.set)
     {
-        scheduleFunction (logInfo, [ "Property is readonly. Done." ]);
+        scheduleFunction (logInfo, [ "Value is readonly. Done." ]);
         return;
     }
         
@@ -130,29 +162,30 @@ function delayedTestProperty (propertyObject, expectedDisabledValue)
     
     // Test setting to a test value
     scheduleFunction (function (propertyObject, value) { propertyObject.property.set (value); }, [ propertyObject, propertyObject.testValue ]);
-    scheduleFunction (assertEqualsProperty, [ "Test", propertyObject.testValue, propertyObject ]);
+    scheduleFunction (assertEqualsValue, [ "Test", propertyObject.testValue, propertyObject ]);
     
-    delayedTestPropertyMinMaxValues (propertyObject, value);
+    delayedTestValueMinMaxValues (propertyObject, value);
     delayedResetValue (propertyObject.property, value);
     delayedDisableValueUpdates (propertyObject.property);
     
     // Retest, but now value must not update
     scheduleFunction (function (propertyObject, value) { propertyObject.property.set (value); }, [ propertyObject, propertyObject.testValue ]);
-    scheduleFunction (assertEqualsProperty, [ "(Off) Test", expectedDisabledValue, propertyObject ]);
+    scheduleFunction (assertEqualsValue, [ "(Off) Test", expectedDisabledValue, propertyObject ]);
 
     delayedEnableValueUpdates (propertyObject.property);
 
-    // Don't toggle if not possible
+    // Don't change if not possible
     if (propertyObject.minValue !== propertyObject.maxValue)
     {
         // Now the value update must fire!
-        scheduleFunction (assertEqualsProperty, [ "(On) Test", propertyObject.testValue, propertyObject ]);
+        scheduleFunction (function (propertyObject, value) { propertyObject.property.set (value); }, [ propertyObject, propertyObject.testValue ]);
+        scheduleFunction (assertEqualsValue, [ "(On) Test", propertyObject.testValue, propertyObject ]);
     }
     
     delayedResetValue (propertyObject.property, value);
 }
 
-function delayedTestPropertyDefaultValue (propertyObject)
+function delayedTestValueDefaultValue (propertyObject)
 {
     scheduleFunction (println, [ "Test property " + propertyObject.name ]);
     
@@ -162,15 +195,15 @@ function delayedTestPropertyDefaultValue (propertyObject)
     return value;
 }
 
-function delayedTestPropertyMinMaxValues (propertyObject, defaultValue)
+function delayedTestValueMinMaxValues (propertyObject, defaultValue)
 {
     // Test setting to a 'minimum' value
     scheduleFunction (function (propertyObject, value) { propertyObject.property.set (value); }, [ propertyObject, propertyObject.minValue ]);
-    scheduleFunction (assertEqualsProperty, [ "Min", propertyObject.minValue, propertyObject ]);
+    scheduleFunction (assertEqualsValue, [ "Min", propertyObject.minValue, propertyObject ]);
 
     // Test setting to a 'maximum' value
     scheduleFunction (function (propertyObject, value) { propertyObject.property.set (value); }, [ propertyObject, propertyObject.maxValue ]);
-    scheduleFunction (assertEqualsProperty, [ "Max", propertyObject.maxValue, propertyObject ]);
+    scheduleFunction (assertEqualsValue, [ "Max", propertyObject.maxValue, propertyObject ]);
 }
 
 function delayedDisableValueUpdates (property)
@@ -188,7 +221,7 @@ function delayedResetValue (property, value)
     scheduleFunction (function (property, value) { property.set (value); }, [ property, value ]);
 }
 
-function assertEqualsProperty (name, expectedValue, propertyObject)
+function assertEqualsValue (name, expectedValue, propertyObject)
 {
     if (TEST_PROPERTY_GETTER)
         assertEquals (name + " (get)", expectedValue, propertyObject.property.get ());

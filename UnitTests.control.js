@@ -39,69 +39,83 @@ function init ()
     LOG.infoLine ();
     
     // Test Application properties
-    
     if (TEST_APPLICATION)
     {
         var application = host.createApplication ();
         assertNotNull ("Application not created.", application);
         
-        testBooleanProperty ("application.hasActiveEngine", application.hasActiveEngine ());
-        testProperty ("application.projectName", application.projectName (), "UnitTestsProject");
-        testProperty ("application.panelLayout", application.panelLayout (), new MultiResult ([ "ARRANGE", "MIX", "EDIT", "PLAY" ]));
-        testProperty ("application.displayProfile", application.displayProfile (), new MultiResult ([ "Single Display (Small)", "Single Display (Large)", "Dual Display (Studio)", "Dual Display (Arranger/Mixer)", "Dual Display (Master/Detail)", "Triple Display", "Tablet" ]));
+        testBooleanValue ("application.hasActiveEngine", application.hasActiveEngine ());
+        testValue ("application.projectName", application.projectName (), "UnitTestsProject");
+        testValue ("application.panelLayout", application.panelLayout (), new MultiResult ([ "ARRANGE", "MIX", "EDIT", "PLAY" ]));
+        testValue ("application.displayProfile", application.displayProfile (), new MultiResult ([ "Single Display (Small)", "Single Display (Large)", "Dual Display (Studio)", "Dual Display (Arranger/Mixer)", "Dual Display (Master/Detail)", "Triple Display", "Tablet" ]));
     }
     
     // Test Arranger properties
-    
     if (TEST_ARRANGER)
     {
         var arranger = host.createArranger ();
-        testSettableBooleanProperty ("arranger.areCueMarkersVisible", arranger.areCueMarkersVisible ());
-        testSettableBooleanProperty ("arranger.isPlaybackFollowEnabled", arranger.isPlaybackFollowEnabled ());
-        testSettableBooleanProperty ("arranger.hasDoubleRowTrackHeight", arranger.hasDoubleRowTrackHeight ());
-        testSettableBooleanProperty ("arranger.isClipLauncherVisible", arranger.isClipLauncherVisible ());
-        testSettableBooleanProperty ("arranger.isTimelineVisible", arranger.isTimelineVisible ());
-        testSettableBooleanProperty ("arranger.isIoSectionVisible", arranger.isIoSectionVisible ());
-        testSettableBooleanProperty ("arranger.areEffectTracksVisible", arranger.areEffectTracksVisible ());
+        testSettableBooleanValue ("arranger.areCueMarkersVisible", arranger.areCueMarkersVisible ());
+        testSettableBooleanValue ("arranger.isPlaybackFollowEnabled", arranger.isPlaybackFollowEnabled ());
+        testSettableBooleanValue ("arranger.hasDoubleRowTrackHeight", arranger.hasDoubleRowTrackHeight ());
+        testSettableBooleanValue ("arranger.isClipLauncherVisible", arranger.isClipLauncherVisible ());
+        testSettableBooleanValue ("arranger.isTimelineVisible", arranger.isTimelineVisible ());
+        testSettableBooleanValue ("arranger.isIoSectionVisible", arranger.isIoSectionVisible ());
+        testSettableBooleanValue ("arranger.areEffectTracksVisible", arranger.areEffectTracksVisible ());
     }
 
     // Test Mixer properties
-    
     if (TEST_MIXER)
     {
         var mixer = host.createMixer ();
         assertNotNull ("Mixer not created.", mixer);
         
-        testSettableBooleanProperty ("mixer.isClipLauncherSectionVisible", mixer.isClipLauncherSectionVisible ());
-        testSettableBooleanProperty ("mixer.isCrossFadeSectionVisible", mixer.isCrossFadeSectionVisible ());
-        testSettableBooleanProperty ("mixer.isDeviceSectionVisible", mixer.isDeviceSectionVisible ());
-        testSettableBooleanProperty ("mixer.isIoSectionVisible", mixer.isIoSectionVisible ());
-        testSettableBooleanProperty ("mixer.isMeterSectionVisible", mixer.isMeterSectionVisible ());
-        testSettableBooleanProperty ("mixer.isSendSectionVisible", mixer.isSendSectionVisible ());
+        testSettableBooleanValue ("mixer.isClipLauncherSectionVisible", mixer.isClipLauncherSectionVisible ());
+        testSettableBooleanValue ("mixer.isCrossFadeSectionVisible", mixer.isCrossFadeSectionVisible ());
+        testSettableBooleanValue ("mixer.isDeviceSectionVisible", mixer.isDeviceSectionVisible ());
+        testSettableBooleanValue ("mixer.isIoSectionVisible", mixer.isIoSectionVisible ());
+        testSettableBooleanValue ("mixer.isMeterSectionVisible", mixer.isMeterSectionVisible ());
+        testSettableBooleanValue ("mixer.isSendSectionVisible", mixer.isSendSectionVisible ());
     }
     
+    // Test Transport properties
     if (TEST_TRANSPORT)
     {
         var transport = host.createTransport ();
         assertNotNull ("Transport not created.", transport);
         
-        testSettableBooleanProperty ("transport.isPlaying", transport.isPlaying ());
-        testSettableBooleanProperty ("transport.isArrangerRecordEnabled", transport.isArrangerRecordEnabled ());
-        testSettableBooleanProperty ("transport.isArrangerOverdubEnabled", transport.isArrangerOverdubEnabled ());
-        testSettableBooleanProperty ("transport.isClipLauncherOverdubEnabled", transport.isClipLauncherOverdubEnabled ());
-        testEnumProperty ("transport.automationWriteMode", transport.automationWriteMode (), new MultiResult ([ "latch", "touch", "write" ]), "latch", "touch", "write");
-        testSettableBooleanProperty ("transport.isArrangerAutomationWriteEnabled", transport.isArrangerAutomationWriteEnabled ());
-        testSettableBooleanProperty ("transport.isClipLauncherAutomationWriteEnabled", transport.isClipLauncherAutomationWriteEnabled ());
-        testBooleanProperty ("transport.isAutomationOverrideActive", transport.isAutomationOverrideActive ());
-        testSettableBooleanProperty ("transport.isArrangerLoopEnabled", transport.isArrangerLoopEnabled ());
-        testSettableBooleanProperty ("transport.isPunchInEnabled", transport.isPunchInEnabled ());
-        testSettableBooleanProperty ("transport.isPunchOutEnabled", transport.isPunchOutEnabled ());
-        testSettableBooleanProperty ("transport.isMetronomeEnabled", transport.isMetronomeEnabled ());
-        testSettableBooleanProperty ("transport.isMetronomeTickPlaybackEnabled", transport.isMetronomeTickPlaybackEnabled ());
+        testSettableBooleanValue ("transport.isPlaying", transport.isPlaying ());
+        testSettableBooleanValue ("transport.isArrangerRecordEnabled", transport.isArrangerRecordEnabled ());
+        testSettableBooleanValue ("transport.isArrangerOverdubEnabled", transport.isArrangerOverdubEnabled ());
+        testSettableBooleanValue ("transport.isClipLauncherOverdubEnabled", transport.isClipLauncherOverdubEnabled ());
+        testEnumValue ("transport.automationWriteMode", transport.automationWriteMode (), new MultiResult ([ "latch", "touch", "write" ]), "latch", "touch", "write");
+        testSettableBooleanValue ("transport.isArrangerAutomationWriteEnabled", transport.isArrangerAutomationWriteEnabled ());
+        testSettableBooleanValue ("transport.isClipLauncherAutomationWriteEnabled", transport.isClipLauncherAutomationWriteEnabled ());
+        testBooleanValue ("transport.isAutomationOverrideActive", transport.isAutomationOverrideActive ());
+        testSettableBooleanValue ("transport.isArrangerLoopEnabled", transport.isArrangerLoopEnabled ());
+        testSettableBooleanValue ("transport.isPunchInEnabled", transport.isPunchInEnabled ());
+        testSettableBooleanValue ("transport.isPunchOutEnabled", transport.isPunchOutEnabled ());
+        testSettableBooleanValue ("transport.isMetronomeEnabled", transport.isMetronomeEnabled ());
+        testSettableBooleanValue ("transport.isMetronomeTickPlaybackEnabled", transport.isMetronomeTickPlaybackEnabled ());
+        testSettableRangedValue ("transport.metronomeVolume", transport.metronomeVolume (), 0.75, 0, 1, 0.6, "-12.0 dB");
+        testSettableBooleanValue ("transport.isMetronomeAudibleDuringPreRoll", transport.isMetronomeAudibleDuringPreRoll ());
+        testEnumValue ("transport.preRoll", transport.preRoll (), new MultiResult ([ "none", "one_bar", "two_bars", "four_bars" ]), "none", "one_bar", "four_bars");
+        testParameter ("transport.tempo", transport.tempo (), 0.1393188854489164, 0, 1, 0.1393188854489164, "110.000 BPM");
+        testSettableBeatTimeValue ("transport.getPosition", transport.getPosition (), 0, 0, 1, 10, "001:01:01:00");
+        testSettableBeatTimeValue ("transport.getInPosition", transport.getInPosition (), 0, 0, 1, 10, "001:01:01:00");
+        testSettableBeatTimeValue ("transport.getOutPosition", transport.getOutPosition (), 4, 1, 2, 10, "002:01:01:00");
+        testParameter ("transport.getCrossfade", transport.getCrossfade (), 0.5, 0, 1, 0.75, "0.000 %");
+
+        var timeSignature = transport.getTimeSignature ();
+        testTimeSignature ("transport.getTimeSignature", timeSignature, "4/4", "3/4", "5/8", "15/16");
+        testIntegerValue ("transport.timeSignature.getNumerator", timeSignature.getNumerator (), 4, 2, 3, 4);
+        testIntegerValue ("transport.timeSignature.getDenominator", timeSignature.getDenominator (), 4, 8, 16, 4);
+        testIntegerValue ("transport.timeSignature.getTicks", timeSignature.getTicks (), 16, 0, 32, 10);
+        
+        testEnumValue ("transport.clipLauncherPostRecordingAction", transport.clipLauncherPostRecordingAction (), new MultiResult ([ "off", "play_recorded", "record_next_free_slot", "stop", "return_to_arrangement", "return_to_previous_clip", "play_random" ]), "off", "play_recorded", "play_random"); 
+        testSettableBeatTimeValue ("transport.getClipLauncherPostRecordingTimeOffset", transport.getClipLauncherPostRecordingTimeOffset (), 4, 0, 1, 10, "001:00:00:00");
     }
 
     // Test CursorDevice properties
-    
     if (TEST_CURSOR_DEVICE || TEST_REMOTE_CONTROLS || TEST_DEVICE_SIBLINGS)
     {
         var cursorDevice = host.createEditorCursorDevice (NUM_SENDS);
@@ -109,19 +123,19 @@ function init ()
 
         if (TEST_CURSOR_DEVICE)
         {
-            testSettableBooleanProperty ("cursorDevice.isEnabled", cursorDevice.isEnabled ());
-            testBooleanProperty ("cursorDevice.isPlugin", cursorDevice.isPlugin (), false, false, true);
-            testIntegerProperty ("cursorDevice.position", cursorDevice.position (), 0);
-            testStringProperty ("cursorDevice.name", cursorDevice.name (), "Polysynth");
-            testBooleanProperty ("cursorDevice.hasPrevious", cursorDevice.hasPrevious ());
-            testBooleanProperty ("cursorDevice.hasNext", cursorDevice.hasNext ());
-            testSettableBooleanProperty ("cursorDevice.isExpanded", cursorDevice.isExpanded ());
-            testSettableBooleanProperty ("cursorDevice.isRemoteControlsSectionVisible", cursorDevice.isRemoteControlsSectionVisible ());
-            testSettableBooleanProperty ("cursorDevice.isWindowOpen", cursorDevice.isWindowOpen (), false, false, false);
-            testBooleanProperty ("cursorDevice.isNested", cursorDevice.isNested (), false);
-            testBooleanProperty ("cursorDevice.hasDrumPads", cursorDevice.hasDrumPads (), false);
-            testBooleanProperty ("cursorDevice.hasLayers", cursorDevice.hasLayers (), false);
-            testBooleanProperty ("cursorDevice.hasSlots", cursorDevice.hasSlots (), true);
+            testSettableBooleanValue ("cursorDevice.isEnabled", cursorDevice.isEnabled ());
+            testBooleanValue ("cursorDevice.isPlugin", cursorDevice.isPlugin (), false, false, true);
+            testIntegerValue ("cursorDevice.position", cursorDevice.position (), 0);
+            testStringValue ("cursorDevice.name", cursorDevice.name (), "Polysynth");
+            testBooleanValue ("cursorDevice.hasPrevious", cursorDevice.hasPrevious ());
+            testBooleanValue ("cursorDevice.hasNext", cursorDevice.hasNext ());
+            testSettableBooleanValue ("cursorDevice.isExpanded", cursorDevice.isExpanded ());
+            testSettableBooleanValue ("cursorDevice.isRemoteControlsSectionVisible", cursorDevice.isRemoteControlsSectionVisible ());
+            testSettableBooleanValue ("cursorDevice.isWindowOpen", cursorDevice.isWindowOpen (), false, false, false);
+            testBooleanValue ("cursorDevice.isNested", cursorDevice.isNested (), false);
+            testBooleanValue ("cursorDevice.hasDrumPads", cursorDevice.hasDrumPads (), false);
+            testBooleanValue ("cursorDevice.hasLayers", cursorDevice.hasLayers (), false);
+            testBooleanValue ("cursorDevice.hasSlots", cursorDevice.hasSlots (), true);
         }
 
         if (TEST_REMOTE_CONTROLS)
@@ -129,19 +143,19 @@ function init ()
             var remoteControls = cursorDevice.createCursorRemoteControlsPage (NUM_PARAMS);
             assertNotNull ("Remote controls not created.", remoteControls);
             
-            testBooleanProperty ("remoteControls.hasPrevious", remoteControls.hasPrevious ());
-            testBooleanProperty ("remoteControls.hasNext", remoteControls.hasNext ());
-            testIntegerProperty ("remoteControls.selectedPageIndex", remoteControls.selectedPageIndex (), 0, 0, 8, 5);
-            testProperty ("remoteControls.pageNames", remoteControls.pageNames ());
+            testBooleanValue ("remoteControls.hasPrevious", remoteControls.hasPrevious ());
+            testBooleanValue ("remoteControls.hasNext", remoteControls.hasNext ());
+            testIntegerValue ("remoteControls.selectedPageIndex", remoteControls.selectedPageIndex (), 0, 0, 8, 5);
+            testValue ("remoteControls.pageNames", remoteControls.pageNames ());
             for (var i = 0; i < NUM_PARAMS; i++)
             {
                 var p = remoteControls.getParameter (i);
                 var PV = PARAMETER_VALUES[i];
-                testBooleanProperty ("p.exists (" + i + ")", p.exists (), PV.exists, true);
-                testStringProperty ("p.name (" + i + ")", p.name (), PV.name, "Parameter Name 1", "Parameter Name 2", "Parameter Name 3");
-                testFloatProperty ("p.value (" + i + ")", p.value (), PV.value, 0, 1, 0.6);
-                testFloatProperty ("p.modulatedValue (" + i + ")", p.modulatedValue (), PV.modulatedValue);
-                testStringProperty ("p.displayedValue (" + i + ")", p.displayedValue (), PV.displayedValue);
+                testBooleanValue ("p.exists (" + i + ")", p.exists (), PV.exists, true);
+                testStringValue ("p.name (" + i + ")", p.name (), PV.name, "Parameter Name 1", "Parameter Name 2", "Parameter Name 3");
+                testDoubleValue ("p.value (" + i + ")", p.value (), PV.value, 0, 1, 0.6);
+                testDoubleValue ("p.modulatedValue (" + i + ")", p.modulatedValue (), PV.modulatedValue);
+                testStringValue ("p.displayedValue (" + i + ")", p.displayedValue (), PV.displayedValue);
             }
         }
 
@@ -151,7 +165,7 @@ function init ()
             assertNotNull ("Siblings device bank not created.", siblings);
         
             for (var i = 0; i < NUM_DEVICES_IN_BANK; i++)
-                testStringProperty ("siblings.getDevice (" + i + ").name", siblings.getDevice (i).name (), SIBLINGS_VALUES[i].name);
+                testStringValue ("siblings.getDevice (" + i + ").name", siblings.getDevice (i).name (), SIBLINGS_VALUES[i].name);
         }
     }
     
