@@ -22,6 +22,7 @@ const TEST_MIXER             = false;
 const TEST_TRANSPORT         = false;
 const TEST_GROOVE            = false;
 const TEST_SCENE             = false;
+const TEST_CURSOR_CLIP       = false;
 const TEST_CURSOR_DEVICE     = false;
 const TEST_REMOTE_CONTROLS   = false;
 const TEST_DEVICE_SIBLINGS   = false;
@@ -153,7 +154,40 @@ function init ()
             testStringValue ("scene.name", scene.name (), sceneValues[i].name);
             testStringValue ("scene.clipCount", scene.clipCount (), sceneValues[i].clipCount);
         }
-    }    
+    }
+    
+    // Test Scene properties
+    if (TEST_RUN_ALL || TEST_CURSOR_CLIP)
+    {
+        var clip = host.createCursorClip (8, 8);
+        assertNotNull ("Clip not created.", clip);
+        
+        // Make sure that the first slot is selected for testing
+        var trackBank = host.createTrackBank (2, 0, 3);
+        assertNotNull ("TrackBank not created.", trackBank);
+        scheduleFunction (function (trackBank) { 
+            var slotBank = trackBank.getChannel (0).clipLauncherSlotBank ();
+            slotBank.select (0);
+            slotBank.showInEditor (0);
+        }, [ trackBank ]);
+        
+        testBooleanValue ("clip.canScrollKeysUp", clip.canScrollKeysUp (), false);
+        testBooleanValue ("clip.canScrollKeysDown", clip.canScrollKeysDown (), false);
+        testBooleanValue ("clip.canScrollStepsBackwards", clip.canScrollStepsBackwards (), false);
+        testBooleanValue ("clip.canScrollStepsForwards", clip.canScrollStepsForwards (), false);
+        testIntegerValue ("clip.playingStep ()", clip.playingStep (), -1);
+        testSettableBooleanValue ("clip.getShuffle", clip.getShuffle (), false);
+        testSettableRangedValue ("clip.getAccent", clip.getAccent (), 0.5, 0, 1, 0.6, "0.00 %");
+        testSettableBeatTimeValue ("clip.getPlayStart", clip.getPlayStart (), 0, 0, 1, 1, "001:01:01:00");
+        testSettableBeatTimeValue ("clip.getPlayStop", clip.getPlayStop (), 10, 4, 4, 4, "003:03:01:00");
+        testSettableBooleanValue ("clip.isLoopEnabled", clip.isLoopEnabled (), true);
+        testSettableBeatTimeValue ("clip.getLoopStart", clip.getLoopStart (), 0, 0, 1, 10, "001:01:01:00");
+        testSettableBeatTimeValue ("clip.getLoopLength", clip.getLoopLength (), 4, 1, 4, 10, "001:00:00:00");
+        
+//        testValue ("clip.color", clip.color ());
+        
+        testStringValue ("clip.getTrack.name", clip.getTrack ().name (), "Polysynth");
+    }
     
     // Test CursorDevice properties
     if (TEST_RUN_ALL || TEST_CURSOR_DEVICE || TEST_REMOTE_CONTROLS || TEST_DEVICE_SIBLINGS)
