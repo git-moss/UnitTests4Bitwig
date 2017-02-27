@@ -51,6 +51,12 @@ function testSettableRangedValue (propertyName, property, defaultValue, minValue
     testStringValue (propertyName + ".displayedValue", property.displayedValue (), defaultDisplayValue);
 }
 
+function testRangedValue (propertyName, property, defaultValue, defaultDisplayValue)
+{
+    testDoubleValue (propertyName, property, defaultValue);
+    testStringValue (propertyName + ".displayedValue", property.displayedValue (), defaultDisplayValue);
+}
+
 function testSettableBeatTimeValue (propertyName, property, defaultValue, minValue, maxValue, testValue, expectedFormattedBeatTime)
 {
     var propertyObject = testDoubleValue (propertyName, property, defaultValue, minValue, maxValue, testValue);
@@ -64,11 +70,17 @@ function testTimeSignature (propertyName, property, defaultValue, minValue, maxV
     
 }
 
-function testParameter (propertyName, property, defaultValue, minValue, maxValue, testValue, defaultDisplayValue)
+function testParameter (propertyName, property, defaultValue, minValue, maxValue, testValue, defaultDisplayValue, 
+                        parameterName, defaultNameValue, minNameValue, maxNameValue, testNameValue)
 {
-    testSettableRangedValue (propertyName, property, defaultValue, minValue, maxValue, testValue, defaultDisplayValue);
+    testBooleanValue (propertyName + ".exists", property.exists (), true);
+    testStringValue (propertyName + ".name", property.name (), parameterName, defaultNameValue, minNameValue, maxNameValue, testNameValue);
+    testDoubleValue (propertyName + ".value", property.value (), defaultValue, minValue, maxValue, testValue);
+    testDoubleValue (propertyName + ".modulatedValue", property.modulatedValue (), defaultValue);
+    testStringValue (propertyName + ".displayedValue", property.displayedValue (), defaultDisplayValue);
     
     // TODO Test the other Parameter attributes
+    //  inc (Number increment, Number resolution)   hoch/runter!
 }
 
 /**
