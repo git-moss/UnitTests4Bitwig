@@ -21,6 +21,7 @@ const TEST_ARRANGER          = false;
 const TEST_MIXER             = false;
 const TEST_TRANSPORT         = false;
 const TEST_GROOVE            = false;
+const TEST_SCENE             = false;
 const TEST_CURSOR_DEVICE     = false;
 const TEST_REMOTE_CONTROLS   = false;
 const TEST_DEVICE_SIBLINGS   = false;
@@ -129,6 +130,31 @@ function init ()
         testParameter ("groove.getAccentPhase", groove.getAccentPhase (), 0.5, 0, 1, 1, "0.000 %", "Accent Phase");
     }    
 
+    // Test Scene properties
+    if (TEST_RUN_ALL || TEST_SCENE)
+    {
+        var numScenes = 3;
+        var sceneBank = host.createSceneBank (numScenes);
+        assertNotNull ("Scene Bank not created.", sceneBank);
+        
+        var sceneValues = [ 
+            { exists: true, sceneIndex: 0, name: "1st Scene", clipCount: 1 },
+            { exists: true, sceneIndex: 1, name: "2nd Scene", clipCount: 2 },
+            { exists: false, sceneIndex: 2, name: "", clipCount: 0 }
+        ];
+        
+        for (var i = 0; i < numScenes; i++)
+        {
+            var scene = sceneBank.getScene (i);
+            assertNotNull ("Scene " + i + " not created.", scene);
+            
+            testStringValue ("scene.exists", scene.exists (), sceneValues[i].exists);
+            testStringValue ("scene.sceneIndex", scene.sceneIndex (), sceneValues[i].sceneIndex);
+            testStringValue ("scene.name", scene.name (), sceneValues[i].name);
+            testStringValue ("scene.clipCount", scene.clipCount (), sceneValues[i].clipCount);
+        }
+    }    
+    
     // Test CursorDevice properties
     if (TEST_RUN_ALL || TEST_CURSOR_DEVICE || TEST_REMOTE_CONTROLS || TEST_DEVICE_SIBLINGS)
     {
