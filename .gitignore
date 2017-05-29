@@ -1,1 +1,3 @@
 /.project
+/${bitwig.extension.directory}
+/target
