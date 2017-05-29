@@ -1,3 +1,5 @@
 /.project
 /${bitwig.extension.directory}
 /target
+/.classpath
+/.settings
