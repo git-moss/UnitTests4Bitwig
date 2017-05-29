@@ -1,2 +1,2 @@
 # UnitTests4Bitwig
-Some unit tests for the JavaScript Bitwig Studio API.
+Some unit tests for the Bitwig Studio API.
