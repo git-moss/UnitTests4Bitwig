@@ -797,8 +797,8 @@ public class TestFramework
         if (expectedValue instanceof String [])
         {
             final String [] ev = (String []) expectedValue;
-            boolean isEqual = actualValue != null;
-            if (isEqual)
+            boolean isEqual = false;
+            if (actualValue != null)
             {
                 final String [] av = (String []) actualValue;
                 isEqual = ev.length == av.length;
