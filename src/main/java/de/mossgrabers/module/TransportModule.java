@@ -80,7 +80,7 @@ public class TransportModule extends TestModule
         tf.testTimeSignature ("transport.getTimeSignature", timeSignature, "4/4", "3/4", "5/8", "15/16");
         tf.testIntegerValue ("transport.timeSignature.numerator", timeSignature.numerator (), Integer.valueOf (4), Integer.valueOf (2), Integer.valueOf (3), Integer.valueOf (4));
         tf.testIntegerValue ("transport.timeSignature.denominator", timeSignature.denominator (), Integer.valueOf (4), Integer.valueOf (8), Integer.valueOf (16), Integer.valueOf (4));
-        tf.testIntegerValue ("transport.timeSignature.ticks", timeSignature.ticks (), Integer.valueOf (16), Integer.valueOf (0), Integer.valueOf (32), Integer.valueOf (10));
+        tf.testIntegerValue ("transport.timeSignature.ticks", timeSignature.ticks (), Integer.valueOf (16), Integer.valueOf (0), Integer.valueOf (32), Integer.valueOf (16));
 
         tf.testEnumValue ("transport.clipLauncherPostRecordingAction", transport.clipLauncherPostRecordingAction (), LAUNCHER_POST_REC_ACTIONS, "off", "play_recorded", "play_random");
         tf.testSettableBeatTimeValue ("transport.getClipLauncherPostRecordingTimeOffset", transport.getClipLauncherPostRecordingTimeOffset (), Double.valueOf (4.0), Double.valueOf (0.0), Double.valueOf (1.0), Double.valueOf (10.0), "001:00:00:00");
