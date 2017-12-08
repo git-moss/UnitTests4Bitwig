@@ -39,7 +39,7 @@ public class CursorDeviceModule extends TestModule
     {
         super.registerTests (tf, host);
 
-        final CursorDevice cursorDevice = host.createEditorCursorDevice (NUM_SENDS);
+        final CursorDevice cursorDevice = host.createCursorTrack (NUM_SENDS, 0).createCursorDevice ();
         tf.assertNotNull ("Cursor Device not created.", cursorDevice);
 
         tf.testSettableBooleanValue ("cursorDevice.isEnabled", cursorDevice.isEnabled ());
@@ -64,7 +64,7 @@ public class CursorDeviceModule extends TestModule
         tf.testIntegerValue ("remoteControls.selectedPageIndex", remoteControls.selectedPageIndex (), Integer.valueOf (0), Integer.valueOf (0), Integer.valueOf (8), Integer.valueOf (5));
         tf.testStringArrayValue ("remoteControls.pageNames", remoteControls.pageNames (), new String []
         {
-                "OSC"
+            "OSC"
         });
         tf.testParameter ("remoteControls.getParameter (0)", remoteControls.getParameter (0), Double.valueOf (0.5), Double.valueOf (0.0), Double.valueOf (1.0), Double.valueOf (0.6), "+0.000 st", "Pitch", "Parameter Name 1", "Parameter Name 2", "Parameter Name 3");
         tf.testParameter ("remoteControls.getParameter (1)", remoteControls.getParameter (1), Double.valueOf (0.5), Double.valueOf (0.0), Double.valueOf (1.0), Double.valueOf (0.6), "0.000 %", "Shape", "Parameter Name 1", "Parameter Name 2", "Parameter Name 3");
