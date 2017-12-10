@@ -35,7 +35,7 @@ public class GrooveModule extends TestModule
         final Groove groove = host.createGroove ();
         tf.assertNotNull ("Groove not created.", groove);
 
-        tf.testParameter ("groove.getEnabled", groove.getEnabled (), Double.valueOf (0.0), Double.valueOf (0.0), Double.valueOf (1.0), Double.valueOf (1.0), "off", "Groove on/off");
+        tf.testParameter ("groove.getEnabled", groove.getEnabled (), Double.valueOf (0.0), Double.valueOf (0.0), Double.valueOf (1.0), Double.valueOf (1.0), "Off", "Groove on/off");
         tf.testParameter ("groove.getShuffleAmount", groove.getShuffleAmount (), Double.valueOf (0.5), Double.valueOf (0.0), Double.valueOf (1.0), Double.valueOf (0.6), "50.000 %", "Shuffle amount");
         tf.testParameter ("groove.getShuffleRate", groove.getShuffleRate (), Double.valueOf (1.0), Double.valueOf (0.0), Double.valueOf (1.0), Double.valueOf (1.0), "1/16", "Shuffle rate");
         tf.testParameter ("groove.getAccentAmount", groove.getAccentAmount (), Double.valueOf (1.0), Double.valueOf (0.0), Double.valueOf (1.0), Double.valueOf (1.0), "100.000 %", "Accent amount");
