@@ -449,9 +449,9 @@ public class TestFramework
     {
         final PropertyTestValues<ColorValue, Double []> propertyObject = this.enableColorValue (propertyName, property, new Double []
         {
-                redValue,
-                greenValue,
-                blueValue
+            redValue,
+            greenValue,
+            blueValue
         });
         this.host.scheduleTask ( () -> this.delayedTestColorValue (propertyObject), ANSWER_DELAY);
     }
@@ -513,7 +513,7 @@ public class TestFramework
         // Test if toggling a boolean value works
         this.scheduleFunction (property::toggle);
         // false is retrieved from getter when off
-        this.scheduleFunction ( () -> this.assertEqualsValue ("(Off) Toggled", Boolean.FALSE, propertyObject));
+        this.scheduleFunction ( () -> this.assertOffEqualsValue ("(Off) Toggled", Boolean.FALSE, propertyObject));
 
         this.delayedEnableValueUpdates (property);
 
@@ -550,7 +550,7 @@ public class TestFramework
 
         // Retest, but now value must not update
         this.scheduleFunction ( () -> this.setPropertyValue (property, testValue));
-        this.scheduleFunction ( () -> this.assertEqualsValue ("(Off) Test", expectedDisabledValue, propertyObject));
+        this.scheduleFunction ( () -> this.assertOffEqualsValue ("(Off) Test", expectedDisabledValue, propertyObject));
 
         this.delayedEnableValueUpdates (property);
 
@@ -660,9 +660,9 @@ public class TestFramework
             this.logger.info (OBSERVING_PROPERTY + propertyName, 1);
             property.addValueObserver ( (red, green, blue) -> propertyObject.setObserved (new Double []
             {
-                    Double.valueOf (red),
-                    Double.valueOf (green),
-                    Double.valueOf (blue)
+                Double.valueOf (red),
+                Double.valueOf (green),
+                Double.valueOf (blue)
             }));
         }
         return propertyObject;
@@ -772,6 +772,26 @@ public class TestFramework
             return;
         this.logger.info ("Marking property " + propertyName, 1);
         property.markInterested ();
+    }
+
+
+    private <V extends Value<?>, T> void assertOffEqualsValue (final String name, final T expectedValue, final PropertyTestValues<V, T> propertyObject)
+    {
+        if (this.testGetter ())
+        {
+            try
+            {
+                this.getPropertyValue (propertyObject.getProperty ());
+                this.logger.error (name + "  (get): No exception was thrown but should be!", 2);
+            }
+            catch (final RuntimeException ex)
+            {
+                this.logger.info (name + "  (get): '" + ex.getLocalizedMessage () + "', OK.", 2);
+            }
+        }
+
+        if (this.testObserver ())
+            this.assertEquals (name + " (observed)", expectedValue, propertyObject.getObserved ());
     }
 
 
