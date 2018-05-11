@@ -20,9 +20,9 @@ public class SceneModule extends TestModule
 {
     private static final SceneVals [] SCENE_VALUES =
     {
-            new SceneVals (true, 0, "1st Scene", 1),
-            new SceneVals (true, 1, "2nd Scene", 1),
-            new SceneVals (false, 2, "", 0)
+        new SceneVals (true, 0, "1st Scene", 1),
+        new SceneVals (true, 1, "2nd Scene", 1),
+        new SceneVals (false, 2, "", 0)
     };
 
 
@@ -54,6 +54,7 @@ public class SceneModule extends TestModule
             tf.testIntegerValue ("scene.sceneIndex", scene.sceneIndex (), Integer.valueOf (SCENE_VALUES[i].sceneIndex));
             tf.testStringValue ("scene.name", scene.name (), SCENE_VALUES[i].name);
             tf.testIntegerValue ("scene.clipCount", scene.clipCount (), Integer.valueOf (SCENE_VALUES[i].clipCount));
+            tf.testColorValue ("scene.color", scene.color (), Double.valueOf (0.0), Double.valueOf (0.6000000238418579), Double.valueOf (0.8509804010391235));
         }
     }
 

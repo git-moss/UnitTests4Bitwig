@@ -45,7 +45,7 @@ public class CursorClipModule extends TestModule
         tf.assertNotNull ("TrackBank not created.", trackBank);
 
         tf.scheduleFunction ( () -> {
-            final ClipLauncherSlotBank slotBank = trackBank.getChannel (0).clipLauncherSlotBank ();
+            final ClipLauncherSlotBank slotBank = trackBank.getItemAt (0).clipLauncherSlotBank ();
             slotBank.select (0);
             slotBank.showInEditor (0);
             clip.scrollToKey (36);

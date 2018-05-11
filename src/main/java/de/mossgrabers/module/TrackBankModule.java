@@ -54,7 +54,7 @@ public class TrackBankModule extends TestModule
         {
             final String trackName = "track" + i;
 
-            final Track track = trackBank.getChannel (i);
+            final Track track = trackBank.getItemAt (i);
             tf.assertNotNull (trackName + " not created.", track);
 
             // Channel interface

@@ -24,11 +24,11 @@ public class BrowserModule extends TestModule
 
     private static final String [] BROWSER_COLUMNS = new String []
     {
-            "Devices",
-            "Presets",
-            "Multisamples",
-            "Samples",
-            "Music"
+        "Devices",
+        "Presets",
+        "Multisamples",
+        "Samples",
+        "Music"
     };
 
 
@@ -79,7 +79,7 @@ public class BrowserModule extends TestModule
     private static void delayedBrowserOpen (final TestFramework tf, final CursorDevice cursorDevice, final PopupBrowser browser)
     {
         tf.scheduleFunction (browser::cancel);
-        tf.scheduleFunction (cursorDevice::browseToReplaceDevice);
+        tf.scheduleFunction ( () -> cursorDevice.replaceDeviceInsertionPoint ().browse ());
     }
 
 
