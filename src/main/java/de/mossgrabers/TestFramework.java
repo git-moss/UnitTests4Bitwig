@@ -990,7 +990,7 @@ public class TestFramework
 
         if (property instanceof SettableRangedValue)
         {
-            ((SettableRangedValue) property).set (((Double) testValue).doubleValue ());
+            ((SettableRangedValue) property).setImmediately (((Double) testValue).doubleValue ());
             return;
         }
 
