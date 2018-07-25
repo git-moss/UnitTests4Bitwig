@@ -8,6 +8,8 @@ import de.mossgrabers.TestFramework;
 
 import com.bitwig.extension.controller.api.Arranger;
 import com.bitwig.extension.controller.api.ControllerHost;
+import com.bitwig.extension.controller.api.CueMarker;
+import com.bitwig.extension.controller.api.CueMarkerBank;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -56,5 +58,20 @@ public class ArrangerModule extends TestModule
         tf.testSettableBooleanValue ("arranger.isTimelineVisible", arranger.isTimelineVisible ());
         tf.testSettableBooleanValue ("arranger.isIoSectionVisible", arranger.isIoSectionVisible ());
         tf.testSettableBooleanValue ("arranger.areEffectTracksVisible", arranger.areEffectTracksVisible ());
+
+        // Test markers
+        final CueMarkerBank markerBank = arranger.createCueMarkerBank (2);
+        tf.assertNotNull ("Marker Bank not created.", markerBank);
+
+        final CueMarker firstMarker = markerBank.getItemAt (0);
+        final CueMarker secondMarker = markerBank.getItemAt (1);
+
+        tf.testBooleanValue ("arranger.markers[0].exists", firstMarker.exists (), Boolean.TRUE);
+        tf.testStringValue ("arranger.markers[0].name", firstMarker.getName (), "My Mark");
+        tf.testColorValue ("arranger.markers[0].color", firstMarker.getColor (), Double.valueOf (0.8999999761581421), Double.valueOf (0.8999999761581421), Double.valueOf (0));
+
+        tf.testBooleanValue ("arranger.markers[1].exists", secondMarker.exists (), Boolean.FALSE);
+        tf.testStringValue ("arranger.markers[1].name", secondMarker.getName (), "");
+        tf.testColorValue ("arranger.markers[1].color", secondMarker.getColor (), Double.valueOf (0), Double.valueOf (0), Double.valueOf (0));
     }
 }

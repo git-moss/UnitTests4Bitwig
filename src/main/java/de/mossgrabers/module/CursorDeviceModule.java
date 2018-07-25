@@ -7,9 +7,9 @@ package de.mossgrabers.module;
 import de.mossgrabers.TestFramework;
 
 import com.bitwig.extension.controller.api.ControllerHost;
-import com.bitwig.extension.controller.api.CursorDevice;
 import com.bitwig.extension.controller.api.CursorRemoteControlsPage;
 import com.bitwig.extension.controller.api.DeviceBank;
+import com.bitwig.extension.controller.api.PinnableCursorDevice;
 
 
 /**
@@ -39,7 +39,7 @@ public class CursorDeviceModule extends TestModule
     {
         super.registerTests (tf, host);
 
-        final CursorDevice cursorDevice = host.createCursorTrack (NUM_SENDS, 0).createCursorDevice ();
+        final PinnableCursorDevice cursorDevice = host.createCursorTrack (NUM_SENDS, 0).createCursorDevice ();
         tf.assertNotNull ("Cursor Device not created.", cursorDevice);
 
         tf.testSettableBooleanValue ("cursorDevice.isEnabled", cursorDevice.isEnabled ());
@@ -55,6 +55,7 @@ public class CursorDeviceModule extends TestModule
         tf.testBooleanValue ("cursorDevice.hasDrumPads", cursorDevice.hasDrumPads (), Boolean.FALSE);
         tf.testBooleanValue ("cursorDevice.hasLayers", cursorDevice.hasLayers (), Boolean.FALSE);
         tf.testBooleanValue ("cursorDevice.hasSlots", cursorDevice.hasSlots (), Boolean.TRUE);
+        tf.testBooleanValue ("cursorDevice.isPinned", cursorDevice.isPinned (), Boolean.FALSE);
 
         final CursorRemoteControlsPage remoteControls = cursorDevice.createCursorRemoteControlsPage (NUM_PARAMS);
         tf.assertNotNull ("Remote controls not created.", remoteControls);

@@ -50,6 +50,11 @@ public class TrackBankModule extends TestModule
         TrackBank trackBank = host.createMainTrackBank (NUM_TRACKS, NUM_SENDS, NUM_SCENES);
         tf.assertNotNull ("Track bank not created.", trackBank);
 
+        tf.testIntegerValue ("trackBank.position", trackBank.scrollPosition (), Integer.valueOf (0), Integer.valueOf (0), Integer.valueOf (1), Integer.valueOf (1));
+        tf.testBooleanValue ("trackBank.canScrollBackwards", trackBank.canScrollBackwards (), Boolean.FALSE);
+        tf.testBooleanValue ("trackBank.canScrollForwards", trackBank.canScrollForwards (), Boolean.FALSE);
+        tf.testIntegerValue ("trackBank.itemCount", trackBank.itemCount (), Integer.valueOf (2));
+
         for (int i = 0; i < NUM_TRACKS; i++)
         {
             final String trackName = "track" + i;

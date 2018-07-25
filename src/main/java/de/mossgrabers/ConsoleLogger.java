@@ -62,7 +62,7 @@ public class ConsoleLogger
     {
         this.host.println ("");
         this.infoLine ();
-        this.host.println (message + "\n");
+        this.host.println (message);
     }
 
 

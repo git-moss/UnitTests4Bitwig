@@ -53,14 +53,14 @@ public class BrowserModule extends TestModule
 
         final PopupBrowser browser = host.createPopupBrowser ();
         tf.assertNotNull ("Browser not created.", browser);
+        browser.exists ().markInterested ();
 
         final BrowserFilterColumn filterColumn = browser.deviceTypeColumn ();
         tf.assertNotNull ("Filter Column not created.", filterColumn);
 
-        host.scheduleTask ( () -> delayedBrowserOpen (tf, cursorDevice, browser), ANSWER_DELAY);
+        host.scheduleTask ( () -> delayedBrowserOpen (tf, cursorDevice), ANSWER_DELAY);
 
         tf.testBooleanValue ("browser.exists", browser.exists (), Boolean.TRUE);
-        tf.testIntegerValue ("browser.selectedContentTypeIndex", browser.selectedContentTypeIndex (), Integer.valueOf (1), Integer.valueOf (0), Integer.valueOf (4), Integer.valueOf (2), Integer.valueOf (0));
         tf.testStringValue ("browser.selectedContentTypeName", browser.selectedContentTypeName (), "Presets");
         tf.testStringArrayValue ("browser.contentTypeNames", browser.contentTypeNames (), BROWSER_COLUMNS);
 
@@ -72,19 +72,47 @@ public class BrowserModule extends TestModule
         tf.testStringValue ("filterColumn.name", filterColumn.name (), "Device Type");
         tf.testStringValue ("filterColumn.getWildcardItem.name", filterColumn.getWildcardItem ().name (), "Any Device Type");
 
+        tf.testIntegerValue ("browser.selectedContentTypeIndex", browser.selectedContentTypeIndex (), Integer.valueOf (1), Integer.valueOf (0), Integer.valueOf (4), Integer.valueOf (2), Integer.valueOf (0));
+
         host.scheduleTask ( () -> delayedBrowserClose (tf, browser), ANSWER_DELAY);
     }
 
 
-    private static void delayedBrowserOpen (final TestFramework tf, final CursorDevice cursorDevice, final PopupBrowser browser)
+    private static void delayedBrowserOpen (final TestFramework tf, final CursorDevice cursorDevice)
     {
-        tf.scheduleFunction (browser::cancel);
-        tf.scheduleFunction ( () -> cursorDevice.replaceDeviceInsertionPoint ().browse ());
+        tf.scheduleFunction (new BrowserStarter (cursorDevice));
     }
 
 
     private static void delayedBrowserClose (final TestFramework tf, final PopupBrowser browser)
     {
         tf.scheduleFunction (browser::cancel);
+    }
+
+    /**
+     * Start a browser.
+     */
+    public static class BrowserStarter implements Runnable
+    {
+        private CursorDevice cursorDevice;
+
+
+        /**
+         * Constructor.
+         *
+         * @param cursorDevice The cursor device
+         */
+        public BrowserStarter (final CursorDevice cursorDevice)
+        {
+            this.cursorDevice = cursorDevice;
+        }
+
+
+        /** {@inheritDoc} */
+        @Override
+        public void run ()
+        {
+            this.cursorDevice.replaceDeviceInsertionPoint ().browse ();
+        }
     }
 }

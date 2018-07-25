@@ -4,6 +4,8 @@
 
 package de.mossgrabers;
 
+import de.mossgrabers.module.BrowserModule;
+
 import com.bitwig.extension.controller.api.BooleanValue;
 import com.bitwig.extension.controller.api.ColorValue;
 import com.bitwig.extension.controller.api.ControllerHost;
@@ -836,6 +838,13 @@ public class TestFramework
             return;
         }
 
+        if (expectedValue instanceof Double)
+        {
+            final boolean isEqual = ((Double) expectedValue).doubleValue () - ((Number) actualValue).doubleValue () < 0.00001;
+            this.printEqualsMessage (name, isEqual, expectedValue, actualValue, 2);
+            return;
+        }
+
         this.printEqualsMessage (name, expectedValue.equals (actualValue), expectedValue, actualValue, 2);
     }
 
@@ -890,6 +899,8 @@ public class TestFramework
             return;
         }
 
+        int delay = ANSWER_DELAY;
+
         final Runnable exec = this.scheduler.remove ();
         try
         {
@@ -905,13 +916,18 @@ public class TestFramework
                         this.scheduler.remove ();
                 }
             }
+            else if (exec instanceof BrowserModule.BrowserStarter)
+            {
+                delay = 2000;
+                this.logger.info ("Waiting 2 seconds for browser...", 1);
+            }
         }
         catch (final RuntimeException ex)
         {
             this.logger.error (ex.getLocalizedMessage (), 2);
         }
 
-        this.host.scheduleTask (this::executeScheduler, ANSWER_DELAY);
+        this.host.scheduleTask (this::executeScheduler, delay);
     }
 
 
