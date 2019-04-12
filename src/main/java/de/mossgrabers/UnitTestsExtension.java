@@ -31,10 +31,12 @@ import java.util.List;
  */
 public class UnitTestsExtension extends ControllerExtension
 {
+    private static final String    CATEGORY_GLOBAL = "Global";
+
     private final ConsoleLogger    logger;
     private final ControllerHost   host;
     private final TestFramework    tf;
-    private final List<TestModule> modules = new ArrayList<> ();
+    private final List<TestModule> modules         = new ArrayList<> ();
 
 
     /**
@@ -67,11 +69,11 @@ public class UnitTestsExtension extends ControllerExtension
     public void init ()
     {
         final Preferences preferences = this.host.getPreferences ();
-        final SettableEnumValue loggingSetting = preferences.getEnumSetting ("Log all details (fine)", "Global", BooleanSetting.OPTIONS, BooleanSetting.OPTIONS[1]);
+        final SettableEnumValue loggingSetting = preferences.getEnumSetting ("Log all details (fine)", CATEGORY_GLOBAL, BooleanSetting.OPTIONS, BooleanSetting.OPTIONS[1]);
         loggingSetting.markInterested ();
-        final SettableEnumValue getterSetting = preferences.getEnumSetting ("Test value getters", "Global", BooleanSetting.OPTIONS, BooleanSetting.OPTIONS[1]);
+        final SettableEnumValue getterSetting = preferences.getEnumSetting ("Test value getters", CATEGORY_GLOBAL, BooleanSetting.OPTIONS, BooleanSetting.OPTIONS[1]);
         getterSetting.markInterested ();
-        final SettableEnumValue observerSetting = preferences.getEnumSetting ("Test value observers", "Global", BooleanSetting.OPTIONS, BooleanSetting.OPTIONS[1]);
+        final SettableEnumValue observerSetting = preferences.getEnumSetting ("Test value observers", CATEGORY_GLOBAL, BooleanSetting.OPTIONS, BooleanSetting.OPTIONS[1]);
         observerSetting.markInterested ();
 
         this.tf.setSettings (getterSetting, observerSetting);

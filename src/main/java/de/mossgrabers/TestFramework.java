@@ -291,6 +291,23 @@ public class TestFramework
 
 
     /**
+     * Test a settable enum property value.
+     *
+     * @param propertyName The name of the propery
+     * @param property The property
+     * @param enumValues The possible values for the enum
+     */
+    public void testSettableEnumValue (final String propertyName, final SettableEnumValue property, final String [] enumValues, final String defaultValue)
+    {
+        for (final String enumValue: enumValues)
+        {
+            final PropertyTestValues<SettableEnumValue, String> propertyObject = this.enableSettableEnumValue (propertyName, property, defaultValue, enumValue);
+            this.host.scheduleTask ( () -> this.delayedTestValue (propertyObject, defaultValue), ANSWER_DELAY);
+        }
+    }
+
+
+    /**
      * Test an integer property value.
      *
      * @param propertyName The name of the propery
@@ -461,12 +478,12 @@ public class TestFramework
 
     private void delayedTestColorValue (final PropertyTestValues<ColorValue, Double []> propertyObject)
     {
-        this.scheduleFunction ( () -> this.logger.info ("Test property " + propertyObject.getName (), 1));
+        this.logPropertyName (propertyObject);
 
         final ColorValue property = propertyObject.getProperty ();
-        float valueRed = property.red ();
-        float valueGreen = property.green ();
-        float valueBlue = property.blue ();
+        final float valueRed = property.red ();
+        final float valueGreen = property.green ();
+        final float valueBlue = property.blue ();
 
         final Set<Double []> defaultValues = propertyObject.getDefaultValues ();
         if (defaultValues.isEmpty ())
@@ -570,7 +587,7 @@ public class TestFramework
 
     private <V extends Value<?>, T> void delayedTestValueDefaultValue (final PropertyTestValues<V, T> propertyObject)
     {
-        this.scheduleFunction ( () -> this.logger.info ("Test property " + propertyObject.getName (), 1));
+        this.logPropertyName (propertyObject);
         this.scheduleFunction ( () -> this.assertEquals ("Default", propertyObject.getDefaultValues (), propertyObject.getObserved ()));
     }
 
@@ -578,12 +595,18 @@ public class TestFramework
     @SuppressWarnings("unchecked")
     private <V extends Value<?>, T> T delayedTestSettableValueDefaultValue (final PropertyTestValues<V, T> propertyObject)
     {
-        this.scheduleFunction ( () -> this.logger.info ("Test property " + propertyObject.getName (), 1));
+        this.logPropertyName (propertyObject);
 
         // Test if the expected default value ist set
         final Object value = this.getPropertyValue (propertyObject.getProperty ());
         this.scheduleFunction ( () -> this.assertEquals ("Default", propertyObject.getDefaultValues (), value));
         return (T) value;
+    }
+
+
+    private <V extends Value<?>, T> void logPropertyName (final PropertyTestValues<V, T> propertyObject)
+    {
+        this.scheduleFunction ( () -> this.logger.info ("Test property " + propertyObject.getName (), 1));
     }
 
 
@@ -729,6 +752,19 @@ public class TestFramework
     }
 
 
+    private PropertyTestValues<SettableEnumValue, String> enableSettableEnumValue (final String propertyName, final SettableEnumValue property, final String defaultValue, final String testValue)
+    {
+        this.enableGetter (propertyName, property);
+        final PropertyTestValues<SettableEnumValue, String> propertyObject = new PropertyTestValues<> (propertyName, property, defaultValue, testValue, testValue, testValue);
+        if (this.testObserver ())
+        {
+            this.logger.info (OBSERVING_PROPERTY + propertyName, 1);
+            property.addValueObserver (propertyObject::setObserved);
+        }
+        return propertyObject;
+    }
+
+
     private PropertyTestValues<DoubleValue, Double> enableDoubleValue (final String propertyName, final DoubleValue property, final Double defaultValue, final Double minValue, final Double maxValue, final Double testValue)
     {
         this.enableGetter (propertyName, property);
@@ -845,7 +881,8 @@ public class TestFramework
             return;
         }
 
-        this.printEqualsMessage (name, expectedValue.equals (actualValue), expectedValue, actualValue, 2);
+        final boolean isEquals = (expectedValue == null && actualValue == null) || (expectedValue != null && expectedValue.equals (actualValue));
+        this.printEqualsMessage (name, isEquals, expectedValue, actualValue, 2);
     }
 
 
@@ -871,7 +908,7 @@ public class TestFramework
             }
             return sb.append (" }").toString ();
         }
-        return value.toString ();
+        return value == null ? "null" : value.toString ();
     }
 
 

@@ -22,9 +22,22 @@ import java.util.Set;
  */
 public class TransportModule extends TestModule
 {
-    private static final Set<String> AUTOMATION_WRITE_MODE     = new HashSet<> ();
-    private static final Set<String> LAUNCHER_POST_REC_ACTIONS = new HashSet<> ();
-    private static final Set<String> PRE_ROLL                  = new HashSet<> ();
+    private static final String []   LAUNCH_QUANTIZATION_VALUES = new String []
+    {
+        "none",
+        "8",
+        "4",
+        "2",
+        "1",
+        "1/2",
+        "1/4",
+        "1/8",
+        "1/16"
+    };
+
+    private static final Set<String> AUTOMATION_WRITE_MODE      = new HashSet<> ();
+    private static final Set<String> LAUNCHER_POST_REC_ACTIONS  = new HashSet<> ();
+    private static final Set<String> PRE_ROLL                   = new HashSet<> ();
 
     static
     {
@@ -66,7 +79,7 @@ public class TransportModule extends TestModule
         tf.testSettableBooleanValue ("transport.isMetronomeEnabled", transport.isMetronomeEnabled ());
         tf.testSettableBooleanValue ("transport.isMetronomeTickPlaybackEnabled", transport.isMetronomeTickPlaybackEnabled ());
 
-        tf.testSettableRangedValue ("transport.metronomeVolume", transport.metronomeVolume (), Double.valueOf (0.75), Double.valueOf (0.0), Double.valueOf (1.0), Double.valueOf (0.6), "-12.0 dB");
+        tf.testSettableRangedValue ("transport.metronomeVolume", transport.metronomeVolume (), Double.valueOf (0.75), Double.valueOf (0.0), Double.valueOf (1.0), Double.valueOf (0.6), "-12.000 dB");
         tf.testSettableBooleanValue ("transport.isMetronomeAudibleDuringPreRoll", transport.isMetronomeAudibleDuringPreRoll ());
         tf.testEnumValue ("transport.preRoll", transport.preRoll (), PRE_ROLL, "none", "one_bar", "four_bars");
 
@@ -84,5 +97,8 @@ public class TransportModule extends TestModule
 
         tf.testEnumValue ("transport.clipLauncherPostRecordingAction", transport.clipLauncherPostRecordingAction (), LAUNCHER_POST_REC_ACTIONS, "off", "play_recorded", "play_random");
         tf.testSettableBeatTimeValue ("transport.getClipLauncherPostRecordingTimeOffset", transport.getClipLauncherPostRecordingTimeOffset (), Double.valueOf (4.0), Double.valueOf (0.0), Double.valueOf (1.0), Double.valueOf (10.0), "001:00:00:00");
+
+        // API 8
+        tf.testSettableEnumValue ("transport.defaultLaunchQuantization", transport.defaultLaunchQuantization (), LAUNCH_QUANTIZATION_VALUES, LAUNCH_QUANTIZATION_VALUES[4]);
     }
 }

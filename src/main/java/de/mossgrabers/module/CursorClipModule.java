@@ -19,7 +19,20 @@ import com.bitwig.extension.controller.api.TrackBank;
  */
 public class CursorClipModule extends TestModule
 {
-    private static final int NUM_TRACKS = 2;
+    private static final int       NUM_TRACKS                 = 2;
+    private static final String [] LAUNCH_QUANTIZATION_VALUES = new String []
+    {
+        "default",
+        "none",
+        "8",
+        "4",
+        "2",
+        "1",
+        "1/2",
+        "1/4",
+        "1/8",
+        "1/16"
+    };
 
 
     /**
@@ -40,10 +53,10 @@ public class CursorClipModule extends TestModule
         final Clip clip = host.createLauncherCursorClip (8, 8);
         tf.assertNotNull ("Clip not created.", clip);
 
-        // Make sure that the first slot is selected for testing
         final TrackBank trackBank = host.createTrackBank (NUM_TRACKS, 0, 3);
         tf.assertNotNull ("TrackBank not created.", trackBank);
 
+        // Make sure that the first slot is selected for testing
         tf.scheduleFunction ( () -> {
             final ClipLauncherSlotBank slotBank = trackBank.getItemAt (0).clipLauncherSlotBank ();
             slotBank.select (0);
@@ -65,5 +78,9 @@ public class CursorClipModule extends TestModule
         tf.testSettableBeatTimeValue ("clip.getLoopLength", clip.getLoopLength (), Double.valueOf (4.0), Double.valueOf (1.0), Double.valueOf (4.0), Double.valueOf (10.0), "001:00:00:00");
         tf.testColorValue ("clip.color", clip.color (), Double.valueOf (0.0), Double.valueOf (0.6000000238418579), Double.valueOf (0.8509804010391235));
         tf.testStringValue ("clip.getTrack.name", clip.getTrack ().name (), "Polysynth");
+
+        // API 8
+        tf.testSettableEnumValue ("clip.launchQuantization", clip.launchQuantization (), LAUNCH_QUANTIZATION_VALUES, LAUNCH_QUANTIZATION_VALUES[0]);
+        tf.testSettableBooleanValue ("clip.useLoopStartAsQuantizationReference", clip.useLoopStartAsQuantizationReference ());
     }
 }
