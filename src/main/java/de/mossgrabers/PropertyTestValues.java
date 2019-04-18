@@ -6,7 +6,9 @@ package de.mossgrabers;
 
 import com.bitwig.extension.controller.api.Value;
 
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -41,12 +43,23 @@ public class PropertyTestValues<V extends Value<?>, T>
      */
     public PropertyTestValues (final String name, final V property, final T defaultValue, final T minValue, final T maxValue, final T testValue)
     {
-        this.name = name;
-        this.property = property;
-        this.defaultValues = Collections.singleton (defaultValue);
-        this.minValue = minValue;
-        this.maxValue = maxValue;
-        this.testValue = testValue;
+        this (name, property, Collections.singleton (defaultValue), minValue, maxValue, testValue);
+    }
+
+
+    /**
+     * Constructor.
+     *
+     * @param name The name of the propery
+     * @param property The property
+     * @param defaultValues The default values to test
+     * @param minValue The minimum value to test
+     * @param maxValue The maximum value to test
+     * @param testValue Another value to test
+     */
+    public PropertyTestValues (final String name, final V property, final Collection<T> defaultValues, final T minValue, final T maxValue, final T testValue)
+    {
+        this (name, property, new HashSet<T> (defaultValues), minValue, maxValue, testValue);
     }
 
 

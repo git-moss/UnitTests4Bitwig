@@ -26,6 +26,8 @@ import com.bitwig.extension.controller.api.StringValue;
 import com.bitwig.extension.controller.api.TimeSignatureValue;
 import com.bitwig.extension.controller.api.Value;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -296,6 +298,7 @@ public class TestFramework
      * @param propertyName The name of the propery
      * @param property The property
      * @param enumValues The possible values for the enum
+     * @param defaultValue The default value to test
      */
     public void testSettableEnumValue (final String propertyName, final SettableEnumValue property, final String [] enumValues, final String defaultValue)
     {
@@ -897,18 +900,38 @@ public class TestFramework
 
     private static String printValue (final Object value)
     {
+        if (value == null)
+            return "null";
+
         if (value instanceof String [])
+            return printValue ((String []) value);
+
+        if (value instanceof Collection)
+            return printValue ((Collection<?>) value);
+
+        return value.toString ();
+    }
+
+
+    private static String printValue (final String [] value)
+    {
+        return printValue (Arrays.asList (value));
+    }
+
+
+    private static String printValue (final Collection<?> value)
+    {
+        if (value.size () == 1)
+            return printValue (value.iterator ().next ());
+
+        final StringBuilder sb = new StringBuilder ();
+        for (final Object s: value)
         {
-            final StringBuilder sb = new StringBuilder ("{ ");
-            for (final String s: (String []) value)
-            {
-                if (sb.length () > 0)
-                    sb.append (", ");
-                sb.append (s);
-            }
-            return sb.append (" }").toString ();
+            if (sb.length () > 0)
+                sb.append (", ");
+            sb.append (printValue (s));
         }
-        return value == null ? "null" : value.toString ();
+        return "{ " + sb.append (" }").toString ();
     }
 
 
