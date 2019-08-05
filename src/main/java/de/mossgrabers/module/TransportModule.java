@@ -22,7 +22,7 @@ import java.util.Set;
  */
 public class TransportModule extends TestModule
 {
-    private static final String []   LAUNCH_QUANTIZATION_VALUES = new String []
+    private static final String []   LAUNCH_QUANTIZATION_VALUES =
     {
         "none",
         "8",

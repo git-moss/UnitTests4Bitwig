@@ -22,7 +22,7 @@ public class BrowserModule extends TestModule
 {
     private static final int       NUM_SENDS       = 2;
 
-    private static final String [] BROWSER_COLUMNS = new String []
+    private static final String [] BROWSER_COLUMNS =
     {
         "Devices",
         "Presets",
