@@ -75,7 +75,7 @@ public class UnitTestsExtensionDefinition extends ControllerExtensionDefinition
     @Override
     public int getRequiredAPIVersion ()
     {
-        return 8;
+        return 9;
     }
 
 
@@ -83,7 +83,8 @@ public class UnitTestsExtensionDefinition extends ControllerExtensionDefinition
     @Override
     public int getNumMidiInPorts ()
     {
-        return 0;
+        // An input is needed to test note repeat
+        return 1;
     }
 
 

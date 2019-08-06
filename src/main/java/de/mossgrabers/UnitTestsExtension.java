@@ -10,6 +10,7 @@ import de.mossgrabers.module.BrowserModule;
 import de.mossgrabers.module.CursorClipModule;
 import de.mossgrabers.module.GrooveModule;
 import de.mossgrabers.module.MixerModule;
+import de.mossgrabers.module.NoteRepeatModule;
 import de.mossgrabers.module.SceneModule;
 import de.mossgrabers.module.TestModule;
 import de.mossgrabers.module.TrackBankModule;
@@ -61,6 +62,7 @@ public class UnitTestsExtension extends ControllerExtension
         this.modules.add (new CursorClipModule ());
         this.modules.add (new BrowserModule ());
         this.modules.add (new TrackBankModule ());
+        this.modules.add (new NoteRepeatModule ());
     }
 
 
