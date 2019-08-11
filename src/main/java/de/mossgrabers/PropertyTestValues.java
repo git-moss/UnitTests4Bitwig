@@ -17,7 +17,7 @@ import java.util.Set;
  *
  * @param <V> The specific value type
  * @param <T> The specific type stored in the value property
- * 
+ *
  * @author J&uuml;rgen Mo&szlig;graber
  */
 public class PropertyTestValues<V extends Value<?>, T>
@@ -59,7 +59,7 @@ public class PropertyTestValues<V extends Value<?>, T>
      */
     public PropertyTestValues (final String name, final V property, final Collection<T> defaultValues, final T minValue, final T maxValue, final T testValue)
     {
-        this (name, property, new HashSet<T> (defaultValues), minValue, maxValue, testValue);
+        this (name, property, new HashSet<> (defaultValues), minValue, maxValue, testValue);
     }
 
 

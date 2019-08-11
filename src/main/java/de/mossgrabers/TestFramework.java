@@ -884,7 +884,7 @@ public class TestFramework
             return;
         }
 
-        final boolean isEquals = (expectedValue == null && actualValue == null) || (expectedValue != null && expectedValue.equals (actualValue));
+        final boolean isEquals = expectedValue == null && actualValue == null || expectedValue != null && expectedValue.equals (actualValue);
         this.printEqualsMessage (name, isEquals, expectedValue, actualValue, 2);
     }
 

@@ -10,6 +10,7 @@ import com.bitwig.extension.controller.api.ClipLauncherSlot;
 import com.bitwig.extension.controller.api.ClipLauncherSlotBank;
 import com.bitwig.extension.controller.api.ControllerHost;
 import com.bitwig.extension.controller.api.Mixer;
+import com.bitwig.extension.controller.api.Send;
 import com.bitwig.extension.controller.api.SendBank;
 import com.bitwig.extension.controller.api.Track;
 import com.bitwig.extension.controller.api.TrackBank;
@@ -47,7 +48,7 @@ public class TrackBankModule extends TestModule
         final Mixer mixer = host.createMixer ();
         tf.assertNotNull ("Mixer not created.", mixer);
 
-        TrackBank trackBank = host.createMainTrackBank (NUM_TRACKS, NUM_SENDS, NUM_SCENES);
+        final TrackBank trackBank = host.createMainTrackBank (NUM_TRACKS, NUM_SENDS, NUM_SCENES);
         tf.assertNotNull ("Track bank not created.", trackBank);
 
         tf.testIntegerValue ("trackBank.position", trackBank.scrollPosition (), Integer.valueOf (0), Integer.valueOf (0), Integer.valueOf (1), Integer.valueOf (1));
@@ -73,8 +74,12 @@ public class TrackBankModule extends TestModule
             tf.testParameter (trackName + ".volume", track.volume (), Double.valueOf (i == 0 ? 0.7937005259840999 : 0.5407418735600996), Double.valueOf (0), Double.valueOf (1.0), Double.valueOf (0.25), i == 0 ? "0.0 dB" : "-10.0 dB", "Volume", null, null, null);
             tf.testParameter (trackName + ".pan", track.pan (), Double.valueOf (0.5), Double.valueOf (0), Double.valueOf (1.0), Double.valueOf (0.25), "0.00 %", "Pan", null, null, null);
 
+            // Send bank
             final SendBank sendBank = track.sendBank ();
-            tf.testParameter ("sendBank.getItemAt", sendBank.getItemAt (0), Double.valueOf (0), Double.valueOf (0), Double.valueOf (1.0), Double.valueOf (0.25), "-Inf dB", "Delay-2", null, null, null);
+            final Send send0 = sendBank.getItemAt (0);
+            tf.testParameter ("sendBank.getItemAt", send0, Double.valueOf (0), Double.valueOf (0), Double.valueOf (1.0), Double.valueOf (0.25), "-Inf dB", "Delay-2", null, null, null);
+            tf.testBooleanValue ("send0.isPreFader", send0.isPreFader (), Boolean.FALSE);
+            tf.testEnumValue ("send0.sendMode", send0.sendMode (), Collections.singleton ("AUTO"), "AUTO", "PRE", "POST");
 
             // Track interface
             tf.testStringValue (trackName + ".trackType", track.trackType (), i == 0 ? "Instrument" : "Audio");
@@ -87,16 +92,16 @@ public class TrackBankModule extends TestModule
             tf.testBooleanValue (trackName + ".canHoldNoteData", track.canHoldNoteData (), Boolean.valueOf (i == 0));
             tf.testBooleanValue (trackName + ".canHoldAudioData", track.canHoldAudioData (), Boolean.valueOf (i != 0));
 
+            // Test slot (bank) interface
             final ClipLauncherSlotBank cs = track.clipLauncherSlotBank ();
             tf.assertNotNull ("ClipLauncherSlotBank " + i + " not created.", cs);
-
             for (int s = 0; s < NUM_SCENES; s++)
             {
                 final ClipLauncherSlot slot = cs.getItemAt (i);
 
                 final String slotName = trackName + ".slot" + s;
                 tf.testBooleanValue (slotName + ".exists", slot.exists (), Boolean.TRUE);
-                tf.testStringValue (slotName + ".name", slot.name (), i == 0 ? (s == 0 ? "Drummerboy" : "") : (s == 0 ? "" : "Yeah!"));
+                tf.testStringValue (slotName + ".name", slot.name (), i == 0 ? s == 0 ? "Drummerboy" : "" : s == 0 ? "" : "Yeah!");
                 tf.testBooleanValue (slotName + ".hasContent", slot.hasContent (), Boolean.valueOf (i == s));
                 tf.testIntegerValue (slotName + ".sceneIndex", slot.sceneIndex (), Integer.valueOf (s));
                 tf.testColorValue (slotName + ".color", slot.color (), Double.valueOf (i == 0 ? 0.0 : 0.8509804010391235), Double.valueOf (i == 0 ? 0.6000000238418579 : 0.21960784494876862), Double.valueOf (i == 0 ? 0.8509804010391235 : 0.4431372582912445));
@@ -109,6 +114,13 @@ public class TrackBankModule extends TestModule
                 tf.testBooleanValue (slotName + ".isSelected", slot.isSelected (), Boolean.valueOf (i == 0));
                 tf.testBooleanValue (slotName + ".isStopQueued", slot.isStopQueued (), Boolean.FALSE);
             }
+
+            // Test FX
+            final TrackBank fxTrackBank = host.createEffectTrackBank (NUM_TRACKS, NUM_SCENES);
+            tf.assertNotNull ("FX Track bank not created.", fxTrackBank);
+
+            tf.testIntegerValue ("fxTrackBank.itemCount", fxTrackBank.itemCount (), Integer.valueOf (1));
+            tf.testBooleanValue ("fxTrackBank.track0.getIsPreFader", fxTrackBank.getItemAt (0).getIsPreFader (), Boolean.FALSE);
         }
     }
 }

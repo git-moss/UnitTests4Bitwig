@@ -47,7 +47,7 @@ public class SceneModule extends TestModule
 
         for (int i = 0; i < numScenes; i++)
         {
-            Scene scene = sceneBank.getScene (i);
+            final Scene scene = sceneBank.getScene (i);
             tf.assertNotNull ("Scene " + i + " not created.", scene);
 
             tf.testBooleanValue ("scene.exists", scene.exists (), Boolean.valueOf (SCENE_VALUES[i].exists));
@@ -66,7 +66,7 @@ public class SceneModule extends TestModule
         int     clipCount;
 
 
-        SceneVals (boolean exists, int sceneIndex, String name, int clipCount)
+        SceneVals (final boolean exists, final int sceneIndex, final String name, final int clipCount)
         {
             this.exists = exists;
             this.sceneIndex = sceneIndex;
