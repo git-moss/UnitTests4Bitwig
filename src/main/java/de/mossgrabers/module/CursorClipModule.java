@@ -1,5 +1,5 @@
 // Written by Jürgen Moßgraber - mossgrabers.de
-// (c) 2017
+// (c) 2017-2019
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
 package de.mossgrabers.module;
@@ -81,6 +81,7 @@ public class CursorClipModule extends TestModule
 
         // API 8
         tf.testSettableEnumValue ("clip.launchQuantization", clip.launchQuantization (), LAUNCH_QUANTIZATION_VALUES, LAUNCH_QUANTIZATION_VALUES[0]);
+        tf.testSettableBooleanValue ("clip.launchLegato", clip.launchLegato ());
         tf.testSettableBooleanValue ("clip.useLoopStartAsQuantizationReference", clip.useLoopStartAsQuantizationReference ());
     }
 }

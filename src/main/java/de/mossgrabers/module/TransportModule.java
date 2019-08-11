@@ -1,5 +1,5 @@
 // Written by Jürgen Moßgraber - mossgrabers.de
-// (c) 2017
+// (c) 2017-2019
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
 package de.mossgrabers.module;
@@ -79,15 +79,15 @@ public class TransportModule extends TestModule
         tf.testSettableBooleanValue ("transport.isMetronomeEnabled", transport.isMetronomeEnabled ());
         tf.testSettableBooleanValue ("transport.isMetronomeTickPlaybackEnabled", transport.isMetronomeTickPlaybackEnabled ());
 
-        tf.testSettableRangedValue ("transport.metronomeVolume", transport.metronomeVolume (), Double.valueOf (0.75), Double.valueOf (0.0), Double.valueOf (1.0), Double.valueOf (0.6), "-12.000 dB");
+        tf.testSettableRangedValue ("transport.metronomeVolume", transport.metronomeVolume (), Double.valueOf (0.75), Double.valueOf (0.0), Double.valueOf (1.0), Double.valueOf (0.6), "-12.0 dB");
         tf.testSettableBooleanValue ("transport.isMetronomeAudibleDuringPreRoll", transport.isMetronomeAudibleDuringPreRoll ());
         tf.testEnumValue ("transport.preRoll", transport.preRoll (), PRE_ROLL, "none", "one_bar", "four_bars");
 
-        tf.testParameter ("transport.tempo", transport.tempo (), Double.valueOf (0.1393188854489164), Double.valueOf (0.0), Double.valueOf (1.0), Double.valueOf (0.1393188854489164), "110.000 BPM", "Tempo");
+        tf.testParameter ("transport.tempo", transport.tempo (), Double.valueOf (0.1393188854489164), Double.valueOf (0.0), Double.valueOf (1.0), Double.valueOf (0.1393188854489164), "110.00 BPM", "Tempo");
         tf.testSettableBeatTimeValue ("transport.getPosition", transport.getPosition (), Double.valueOf (0.0), Double.valueOf (0.0), Double.valueOf (1.0), Double.valueOf (10.0), "001:01:01:00");
         tf.testSettableBeatTimeValue ("transport.getInPosition", transport.getInPosition (), Double.valueOf (0.0), Double.valueOf (0.0), Double.valueOf (1.0), Double.valueOf (10.0), "001:01:01:00");
         tf.testSettableBeatTimeValue ("transport.getOutPosition", transport.getOutPosition (), Double.valueOf (4.0), Double.valueOf (1.0), Double.valueOf (2.0), Double.valueOf (10.0), "002:01:01:00");
-        tf.testParameter ("transport.crossfade", transport.crossfade (), Double.valueOf (0.5), Double.valueOf (0.0), Double.valueOf (1.0), Double.valueOf (0.75), "0.000 %", "Crossfade");
+        tf.testParameter ("transport.crossfade", transport.crossfade (), Double.valueOf (0.5), Double.valueOf (0.0), Double.valueOf (1.0), Double.valueOf (0.75), "0.00 %", "Crossfade");
 
         final TimeSignatureValue timeSignature = transport.timeSignature ();
         tf.testTimeSignature ("transport.getTimeSignature", timeSignature, "4/4", "3/4", "5/8", "15/16");

@@ -1,5 +1,5 @@
 // Written by Jürgen Moßgraber - mossgrabers.de
-// (c) 2017
+// (c) 2017-2019
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
 package de.mossgrabers.module;
@@ -68,9 +68,10 @@ public class TrackBankModule extends TestModule
             tf.testBooleanValue (trackName + ".isActivated", track.isActivated (), Boolean.TRUE);
             tf.testBooleanValue (trackName + ".mute", track.mute (), Boolean.FALSE);
             tf.testBooleanValue (trackName + ".solo", track.solo (), Boolean.FALSE);
+            tf.testBooleanValue (trackName + ".isMutedBySolo", track.isMutedBySolo (), Boolean.FALSE);
             tf.testColorValue (trackName + ".color", track.color (), Double.valueOf (i == 0 ? 1.0 : 0.8509804010391235), Double.valueOf (i == 0 ? 0.34117648005485535 : 0.21960784494876862), Double.valueOf (i == 0 ? 0.0235294122248888 : 0.4431372582912445));
-            tf.testParameter (trackName + ".volume", track.volume (), Double.valueOf (i == 0 ? 0.7937005259840999 : 0.5407418735600996), Double.valueOf (0), Double.valueOf (1.0), Double.valueOf (0.25), i == 0 ? "0.000 dB" : "-10.000 dB", "Volume", null, null, null);
-            tf.testParameter (trackName + ".pan", track.pan (), Double.valueOf (0.5), Double.valueOf (0), Double.valueOf (1.0), Double.valueOf (0.25), "0.000 %", "Pan", null, null, null);
+            tf.testParameter (trackName + ".volume", track.volume (), Double.valueOf (i == 0 ? 0.7937005259840999 : 0.5407418735600996), Double.valueOf (0), Double.valueOf (1.0), Double.valueOf (0.25), i == 0 ? "0.0 dB" : "-10.0 dB", "Volume", null, null, null);
+            tf.testParameter (trackName + ".pan", track.pan (), Double.valueOf (0.5), Double.valueOf (0), Double.valueOf (1.0), Double.valueOf (0.25), "0.00 %", "Pan", null, null, null);
 
             final SendBank sendBank = track.sendBank ();
             tf.testParameter ("sendBank.getItemAt", sendBank.getItemAt (0), Double.valueOf (0), Double.valueOf (0), Double.valueOf (1.0), Double.valueOf (0.25), "-Inf dB", "Delay-2", null, null, null);

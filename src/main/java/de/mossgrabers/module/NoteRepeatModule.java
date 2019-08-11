@@ -1,5 +1,5 @@
 // Written by Jürgen Moßgraber - mossgrabers.de
-// (c) 2017
+// (c) 2017-2019
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
 package de.mossgrabers.module;
@@ -49,6 +49,6 @@ public class NoteRepeatModule extends TestModule
 
         tf.testDoubleValue ("noteRepeat.noteLengthRatio", noteRepeat.noteLengthRatio (), Double.valueOf (0.5), Double.valueOf (0.03125), Double.valueOf (1), Double.valueOf (0.5));
         tf.testDoubleValue ("noteRepeat.period", noteRepeat.period (), Double.valueOf (0.25), Double.valueOf (0.0078125), Double.valueOf (128), Double.valueOf (8));
-        tf.testDoubleValue ("noteRepeat.velocityRamp", noteRepeat.velocityRamp (), Double.valueOf (0), Double.valueOf (0), Double.valueOf (1), Double.valueOf (0.5));
+        tf.testDoubleValue ("noteRepeat.velocityRamp", noteRepeat.velocityRamp (), Double.valueOf (0), Double.valueOf (-1), Double.valueOf (1), Double.valueOf (0.5));
     }
 }
