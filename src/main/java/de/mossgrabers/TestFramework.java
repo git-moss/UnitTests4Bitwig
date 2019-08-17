@@ -451,6 +451,24 @@ public class TestFramework
      * @param maxValue The maximum value to test
      * @param testValue Another value to test
      */
+    public void testEnumValue (final String propertyName, final EnumValue property, final String [] defaultValues, final String minValue, final String maxValue, final String testValue)
+    {
+        final Set<String> defaultValuesSet = new HashSet<> (defaultValues.length);
+        Collections.addAll (defaultValuesSet, defaultValues);
+        this.testEnumValue (propertyName, property, defaultValuesSet, minValue, maxValue, testValue);
+    }
+
+
+    /**
+     * Test an enum property value.
+     *
+     * @param propertyName The name of the propery
+     * @param property The property
+     * @param defaultValues The default values
+     * @param minValue The minimum value to test
+     * @param maxValue The maximum value to test
+     * @param testValue Another value to test
+     */
     public void testEnumValue (final String propertyName, final EnumValue property, final Set<String> defaultValues, final String minValue, final String maxValue, final String testValue)
     {
         final PropertyTestValues<EnumValue, String> propertyObject = this.enableEnumValue (propertyName, property, defaultValues, minValue, maxValue, testValue);

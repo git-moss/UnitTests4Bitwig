@@ -56,6 +56,7 @@ public class ApplicationModule extends TestModule
         tf.testStringValue ("application.panelLayout", application.panelLayout (), PANEL_LAYOUTS);
         tf.testStringValue ("application.displayProfile", application.displayProfile (), DISPLAY_LAYOUTS);
 
+        // API 9
         tf.testEnumValue ("application.recordQuantizationGrid", application.recordQuantizationGrid (), RECORD_QUANTIZATION_GRID, "OFF", "1/4", "1/16");
         tf.testBooleanValue ("application.recordQuantizeNoteLength", application.recordQuantizeNoteLength ());
     }

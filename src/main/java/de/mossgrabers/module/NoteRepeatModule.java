@@ -40,7 +40,7 @@ public class NoteRepeatModule extends TestModule
         final NoteInput noteInput = midiInPort.createNoteInput ("UnitTests");
         tf.assertNotNull ("NoteInput not created.", noteInput);
 
-        final NoteRepeat noteRepeat = noteInput.createNoteRepeat ();
+        final NoteRepeat noteRepeat = noteInput.noteRepeat ();
         tf.assertNotNull ("NoteRepeat not created.", noteRepeat);
 
         tf.testSettableBooleanValue ("noteRepeat.isEnabled", noteRepeat.isEnabled ());

@@ -20,7 +20,7 @@ import com.bitwig.extension.controller.api.TrackBank;
 public class CursorClipModule extends TestModule
 {
     private static final int       NUM_TRACKS                 = 2;
-    private static final String [] LAUNCH_QUANTIZATION_VALUES = new String []
+    private static final String [] LAUNCH_QUANTIZATION_VALUES =
     {
         "default",
         "none",
@@ -32,6 +32,13 @@ public class CursorClipModule extends TestModule
         "1/4",
         "1/8",
         "1/16"
+    };
+
+    private static final String [] LAUNCH_MODE_VALUES         =
+    {
+        "play_with_quantization",
+        "continue_immediately",
+        "continue_with_quantization"
     };
 
 
@@ -81,7 +88,9 @@ public class CursorClipModule extends TestModule
 
         // API 8
         tf.testSettableEnumValue ("clip.launchQuantization", clip.launchQuantization (), LAUNCH_QUANTIZATION_VALUES, LAUNCH_QUANTIZATION_VALUES[0]);
-        tf.testSettableBooleanValue ("clip.launchLegato", clip.launchLegato ());
         tf.testSettableBooleanValue ("clip.useLoopStartAsQuantizationReference", clip.useLoopStartAsQuantizationReference ());
+
+        // API 9
+        tf.testEnumValue ("clip.launchMode", clip.launchMode (), LAUNCH_MODE_VALUES, LAUNCH_MODE_VALUES[0], LAUNCH_MODE_VALUES[1], LAUNCH_MODE_VALUES[2]);
     }
 }
