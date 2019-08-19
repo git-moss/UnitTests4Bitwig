@@ -23,13 +23,19 @@ public class ApplicationModule extends TestModule
 {
     private static final Set<String> PANEL_LAYOUTS            = new HashSet<> ();
     private static final Set<String> DISPLAY_LAYOUTS          = new HashSet<> ();
-    private static final Set<String> RECORD_QUANTIZATION_GRID = new HashSet<> ();
+    private static final String []   RECORD_QUANTIZATION_GRID =
+    {
+        "OFF",
+        "1/32",
+        "1/16",
+        "1/8",
+        "1/4"
+    };
 
     static
     {
         Collections.addAll (PANEL_LAYOUTS, "ARRANGE", "MIX", "EDIT", "PLAY");
         Collections.addAll (DISPLAY_LAYOUTS, "Single Display (Small)", "Single Display (Large)", "Dual Display (Studio)", "Dual Display (Arranger/Mixer)", "Dual Display (Master/Detail)", "Triple Display", "Tablet");
-        Collections.addAll (RECORD_QUANTIZATION_GRID, "OFF", "1/32", "1/16", "1/8", "1/4");
     }
 
 
@@ -57,7 +63,7 @@ public class ApplicationModule extends TestModule
         tf.testStringValue ("application.displayProfile", application.displayProfile (), DISPLAY_LAYOUTS);
 
         // API 9
-        tf.testEnumValue ("application.recordQuantizationGrid", application.recordQuantizationGrid (), RECORD_QUANTIZATION_GRID, "OFF", "1/4", "1/16");
+        tf.testEnumValue ("application.recordQuantizationGrid", application.recordQuantizationGrid (), RECORD_QUANTIZATION_GRID, RECORD_QUANTIZATION_GRID[0], RECORD_QUANTIZATION_GRID[4], RECORD_QUANTIZATION_GRID[2]);
         tf.testBooleanValue ("application.recordQuantizeNoteLength", application.recordQuantizeNoteLength ());
     }
 }
