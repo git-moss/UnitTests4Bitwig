@@ -75,7 +75,7 @@ public class UnitTestsExtensionDefinition extends ControllerExtensionDefinition
     @Override
     public int getRequiredAPIVersion ()
     {
-        return 9;
+        return 10;
     }
 
 

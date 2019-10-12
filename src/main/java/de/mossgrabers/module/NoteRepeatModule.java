@@ -6,10 +6,10 @@ package de.mossgrabers.module;
 
 import de.mossgrabers.TestFramework;
 
+import com.bitwig.extension.controller.api.Arpeggiator;
 import com.bitwig.extension.controller.api.ControllerHost;
 import com.bitwig.extension.controller.api.MidiIn;
 import com.bitwig.extension.controller.api.NoteInput;
-import com.bitwig.extension.controller.api.NoteRepeat;
 
 
 /**
@@ -40,15 +40,22 @@ public class NoteRepeatModule extends TestModule
         final NoteInput noteInput = midiInPort.createNoteInput ("UnitTests");
         tf.assertNotNull ("NoteInput not created.", noteInput);
 
-        final NoteRepeat noteRepeat = noteInput.noteRepeat ();
-        tf.assertNotNull ("NoteRepeat not created.", noteRepeat);
+        final Arpeggiator arpeggiator = noteInput.arpeggiator ();
+        tf.assertNotNull ("Arpeggiator not created.", arpeggiator);
 
-        tf.testSettableBooleanValue ("noteRepeat.isEnabled", noteRepeat.isEnabled ());
-        tf.testSettableBooleanValue ("noteRepeat.shuffle", noteRepeat.shuffle ());
-        tf.testSettableBooleanValue ("noteRepeat.usePressureToVelocity", noteRepeat.usePressureToVelocity ());
+        tf.testSettableBooleanValue ("arpeggiator.isEnabled", arpeggiator.isEnabled ());
+        tf.testSettableBooleanValue ("arpeggiator.isFreeRunning", arpeggiator.isFreeRunning ());
+        tf.testSettableBooleanValue ("arpeggiator.shuffle", arpeggiator.shuffle ());
+        tf.testSettableBooleanValue ("arpeggiator.usePressureToVelocity", arpeggiator.usePressureToVelocity ());
 
-        tf.testDoubleValue ("noteRepeat.noteLengthRatio", noteRepeat.noteLengthRatio (), Double.valueOf (0.5), Double.valueOf (0.03125), Double.valueOf (1), Double.valueOf (0.5));
-        tf.testDoubleValue ("noteRepeat.period", noteRepeat.period (), Double.valueOf (0.25), Double.valueOf (0.0078125), Double.valueOf (128), Double.valueOf (8));
-        tf.testDoubleValue ("noteRepeat.velocityRamp", noteRepeat.velocityRamp (), Double.valueOf (0), Double.valueOf (-1), Double.valueOf (1), Double.valueOf (0.5));
+        tf.testIntegerValue ("arpeggiator.octaves", arpeggiator.octaves (), Integer.valueOf (1), Integer.valueOf (0), Integer.valueOf (8), Integer.valueOf (4));
+
+        tf.testDoubleValue ("arpeggiator.gateLength", arpeggiator.gateLength (), Double.valueOf (0.5), Double.valueOf (0.03125), Double.valueOf (1), Double.valueOf (0.5));
+        tf.testDoubleValue ("arpeggiator.period", arpeggiator.period (), Double.valueOf (0.25), Double.valueOf (0.0078125), Double.valueOf (128), Double.valueOf (8));
+
+        tf.testEnumValue ("arpeggiator.mode", arpeggiator.mode (), new String []
+        {
+            "up"
+        }, "up", "pinky-down", "random");
     }
 }
