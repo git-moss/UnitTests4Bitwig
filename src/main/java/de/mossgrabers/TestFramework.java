@@ -654,13 +654,13 @@ public class TestFramework
 
     private void delayedDisableValueUpdates (final Value<?> property)
     {
-        this.scheduleFunction ( () -> property.setIsSubscribed (false));
+        this.scheduleFunction (property::unsubscribe);
     }
 
 
     private void delayedEnableValueUpdates (final Value<?> property)
     {
-        this.scheduleFunction ( () -> property.setIsSubscribed (true));
+        this.scheduleFunction (property::subscribe);
     }
 
 
@@ -1108,6 +1108,7 @@ public class TestFramework
     {
         return BooleanSetting.isTrue (this.getterSetting);
     }
+
 
     class ModuleSection implements Runnable
     {
