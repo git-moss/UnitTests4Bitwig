@@ -65,7 +65,5 @@ public class ApplicationModule extends TestModule
         // API 10
         tf.testEnumValue ("application.recordQuantizationGrid", application.recordQuantizationGrid (), RECORD_QUANTIZATION_GRID, RECORD_QUANTIZATION_GRID[0], RECORD_QUANTIZATION_GRID[4], RECORD_QUANTIZATION_GRID[2]);
         tf.testBooleanValue ("application.recordQuantizeNoteLength", application.recordQuantizeNoteLength ());
-        tf.testBooleanValue ("application.getAction ().isEnabled", application.getAction ("Quit").isEnabled (), Boolean.TRUE);
-        tf.testBooleanValue ("application.getAction ().isEnabled", application.getAction ("New").isEnabled (), Boolean.TRUE);
     }
 }

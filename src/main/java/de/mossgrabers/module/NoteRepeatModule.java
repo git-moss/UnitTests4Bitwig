@@ -51,7 +51,7 @@ public class NoteRepeatModule extends TestModule
         tf.testIntegerValue ("arpeggiator.octaves", arpeggiator.octaves (), Integer.valueOf (1), Integer.valueOf (0), Integer.valueOf (8), Integer.valueOf (4));
 
         tf.testDoubleValue ("arpeggiator.gateLength", arpeggiator.gateLength (), Double.valueOf (0.5), Double.valueOf (0.03125), Double.valueOf (1), Double.valueOf (0.5));
-        tf.testDoubleValue ("arpeggiator.period", arpeggiator.period (), Double.valueOf (0.25), Double.valueOf (0.0078125), Double.valueOf (128), Double.valueOf (8));
+        tf.testDoubleValue ("arpeggiator.period", arpeggiator.rate (), Double.valueOf (0.25), Double.valueOf (0.0078125), Double.valueOf (128), Double.valueOf (8));
 
         tf.testEnumValue ("arpeggiator.mode", arpeggiator.mode (), new String []
         {
