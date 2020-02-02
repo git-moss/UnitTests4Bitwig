@@ -58,6 +58,7 @@ public class SceneModule extends TestModule
         }
     }
 
+
     private static class SceneVals
     {
         boolean exists;

@@ -89,6 +89,7 @@ public class BrowserModule extends TestModule
         tf.scheduleFunction (browser::cancel);
     }
 
+
     /**
      * Start a browser.
      */
