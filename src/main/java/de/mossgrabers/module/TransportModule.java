@@ -1,5 +1,5 @@
 // Written by Jürgen Moßgraber - mossgrabers.de
-// (c) 2017-2019
+// (c) 2019-2020
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
 package de.mossgrabers.module;
@@ -58,9 +58,10 @@ public class TransportModule extends TestModule
 
     /** {@inheritDoc} */
     @Override
-    public void registerTests (final TestFramework tf, final ControllerHost host)
+    public boolean registerTests (final TestFramework tf, final ControllerHost host)
     {
-        super.registerTests (tf, host);
+        if (!super.registerTests (tf, host))
+            return false;
 
         final Transport transport = host.createTransport ();
         tf.assertNotNull ("Transport not created.", transport);
@@ -100,5 +101,7 @@ public class TransportModule extends TestModule
 
         // API 8
         tf.testSettableEnumValue ("transport.defaultLaunchQuantization", transport.defaultLaunchQuantization (), LAUNCH_QUANTIZATION_VALUES, LAUNCH_QUANTIZATION_VALUES[4]);
+
+        return true;
     }
 }

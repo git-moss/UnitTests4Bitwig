@@ -1,5 +1,5 @@
 // Written by Jürgen Moßgraber - mossgrabers.de
-// (c) 2017-2019
+// (c) 2019-2020
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
 package de.mossgrabers;
@@ -39,43 +39,18 @@ public class ConsoleLogger
      */
     public void finish ()
     {
-        this.host.println (SEPARATOR_LINE);
-        this.host.println ("Finished.");
+        this.header ("Done");
     }
 
 
     /**
-     * Prints a separater line.
+     * Prints a separator line.
+     * 
+     * @param header The header text
      */
-    public void infoLine ()
+    public void header (final String header)
     {
-        this.host.println (SEPARATOR_LINE);
-    }
-
-
-    /**
-     * Prints a header message.
-     *
-     * @param message The message
-     */
-    public void header (final String message)
-    {
-        this.host.println ("");
-        this.infoLine ();
-        this.host.println (message);
-    }
-
-
-    /**
-     * Prints an info message.
-     *
-     * @param message The message
-     * @param padDepth The padding, 1 or 2
-     */
-    public void info (final String message, final int padDepth)
-    {
-        if (padDepth < 2 || BooleanSetting.isTrue (this.loggingSetting))
-            this.host.println (buildMsg (message, padDepth));
+        this.host.println (header + " " + SEPARATOR_LINE.substring (0, SEPARATOR_LINE.length () - header.length () - 2));
     }
 
 
@@ -88,6 +63,31 @@ public class ConsoleLogger
     public void error (final String message, final int padDepth)
     {
         this.host.errorln (buildMsg (message, padDepth));
+    }
+
+
+    /**
+     * Prints an info message.
+     *
+     * @param message The message
+     * @param padDepth The padding
+     */
+    public void info (final String message, final int padDepth)
+    {
+        this.host.println (buildMsg (message, padDepth));
+    }
+
+
+    /**
+     * Prints an fine info message.
+     *
+     * @param message The message
+     * @param padDepth The padding
+     */
+    public void fine (final String message, final int padDepth)
+    {
+        if (BooleanSetting.isTrue (this.loggingSetting))
+            this.host.println (buildMsg (message, padDepth));
     }
 
 

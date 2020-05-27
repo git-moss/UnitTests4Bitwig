@@ -1,5 +1,5 @@
 // Written by Jürgen Moßgraber - mossgrabers.de
-// (c) 2017-2019
+// (c) 2019-2020
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
 package de.mossgrabers.module;
@@ -35,9 +35,10 @@ public class CursorDeviceModule extends TestModule
 
     /** {@inheritDoc} */
     @Override
-    public void registerTests (final TestFramework tf, final ControllerHost host)
+    public boolean registerTests (final TestFramework tf, final ControllerHost host)
     {
-        super.registerTests (tf, host);
+        if (!super.registerTests (tf, host))
+            return false;
 
         final PinnableCursorDevice cursorDevice = host.createCursorTrack (NUM_SENDS, 0).createCursorDevice ();
         tf.assertNotNull ("Cursor Device not created.", cursorDevice);
@@ -75,5 +76,7 @@ public class CursorDeviceModule extends TestModule
 
         tf.testStringValue ("siblings.getDevice (0).name", siblings.getDevice (0).name (), "Polysynth");
         tf.testStringValue ("siblings.getDevice (1).name", siblings.getDevice (1).name (), "");
+
+        return true;
     }
 }

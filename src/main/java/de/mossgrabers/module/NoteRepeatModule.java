@@ -1,5 +1,5 @@
 // Written by Jürgen Moßgraber - mossgrabers.de
-// (c) 2017-2019
+// (c) 2019-2020
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
 package de.mossgrabers.module;
@@ -30,15 +30,18 @@ public class NoteRepeatModule extends TestModule
 
     /** {@inheritDoc} */
     @Override
-    public void registerTests (final TestFramework tf, final ControllerHost host)
+    public boolean registerTests (final TestFramework tf, final ControllerHost host)
     {
-        super.registerTests (tf, host);
+        if (!super.registerTests (tf, host))
+            return false;
 
         final MidiIn midiInPort = host.getMidiInPort (0);
         tf.assertNotNull ("MidiIn not created.", midiInPort);
 
         final NoteInput noteInput = midiInPort.createNoteInput ("UnitTests");
         tf.assertNotNull ("NoteInput not created.", noteInput);
+
+        // API 10
 
         final Arpeggiator arpeggiator = noteInput.arpeggiator ();
         tf.assertNotNull ("Arpeggiator not created.", arpeggiator);
@@ -57,5 +60,13 @@ public class NoteRepeatModule extends TestModule
         {
             "up"
         }, "up", "pinky-down", "random");
+
+        // API 11
+
+        tf.testSettableBooleanValue ("arpeggiator.enableOverlappingNotes", arpeggiator.enableOverlappingNotes ());
+        tf.testDoubleValue ("arpeggiator.humanize", arpeggiator.humanize (), Double.valueOf (0), Double.valueOf (0.03125), Double.valueOf (1), Double.valueOf (0.5));
+        tf.testSettableBooleanValue ("arpeggiator.terminateNotesImmediately", arpeggiator.terminateNotesImmediately ());
+
+        return true;
     }
 }

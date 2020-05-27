@@ -1,5 +1,5 @@
 // Written by Jürgen Moßgraber - mossgrabers.de
-// (c) 2017-2019
+// (c) 2019-2020
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
 package de.mossgrabers.module;
@@ -50,9 +50,10 @@ public class ApplicationModule extends TestModule
 
     /** {@inheritDoc} */
     @Override
-    public void registerTests (final TestFramework tf, final ControllerHost host)
+    public boolean registerTests (final TestFramework tf, final ControllerHost host)
     {
-        super.registerTests (tf, host);
+        if (!super.registerTests (tf, host))
+            return false;
 
         final Application application = host.createApplication ();
         tf.assertNotNull ("Application not created.", application);
@@ -65,5 +66,7 @@ public class ApplicationModule extends TestModule
         // API 10
         tf.testEnumValue ("application.recordQuantizationGrid", application.recordQuantizationGrid (), RECORD_QUANTIZATION_GRID, RECORD_QUANTIZATION_GRID[0], RECORD_QUANTIZATION_GRID[4], RECORD_QUANTIZATION_GRID[2]);
         tf.testBooleanValue ("application.recordQuantizeNoteLength", application.recordQuantizeNoteLength ());
+
+        return true;
     }
 }

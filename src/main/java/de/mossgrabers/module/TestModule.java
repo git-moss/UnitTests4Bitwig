@@ -1,5 +1,5 @@
 // Written by Jürgen Moßgraber - mossgrabers.de
-// (c) 2017-2019
+// (c) 2019-2020
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
 package de.mossgrabers.module;
@@ -40,12 +40,16 @@ public abstract class TestModule
      *
      * @param tf The API test framework
      * @param host The controller host
+     * @return Returns true if the module is enabled
      */
-    public void registerTests (final TestFramework tf, final ControllerHost host)
+    public boolean registerTests (final TestFramework tf, final ControllerHost host)
     {
         final Preferences preferences = host.getPreferences ();
-        final SettableEnumValue setting = preferences.getEnumSetting ("All", this.moduleName, BooleanSetting.OPTIONS, BooleanSetting.OPTIONS[1]);
+        final SettableEnumValue setting = preferences.getEnumSetting ("All", this.moduleName, BooleanSetting.OPTIONS, BooleanSetting.OPTIONS[0]);
         setting.markInterested ();
-        tf.beginModuleTest (this.moduleName, setting);
+        final boolean isEnabled = BooleanSetting.isTrue (setting);
+        if (isEnabled)
+            tf.beginModuleTest (this.moduleName, setting);
+        return isEnabled;
     }
 }

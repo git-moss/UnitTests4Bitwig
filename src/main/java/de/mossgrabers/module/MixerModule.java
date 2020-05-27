@@ -1,5 +1,5 @@
 // Written by Jürgen Moßgraber - mossgrabers.de
-// (c) 2017-2019
+// (c) 2019-2020
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
 package de.mossgrabers.module;
@@ -28,9 +28,10 @@ public class MixerModule extends TestModule
 
     /** {@inheritDoc} */
     @Override
-    public void registerTests (final TestFramework tf, final ControllerHost host)
+    public boolean registerTests (final TestFramework tf, final ControllerHost host)
     {
-        super.registerTests (tf, host);
+        if (!super.registerTests (tf, host))
+            return false;
 
         final Mixer mixer = host.createMixer ();
         tf.assertNotNull ("Mixer not created.", mixer);
@@ -41,5 +42,7 @@ public class MixerModule extends TestModule
         tf.testSettableBooleanValue ("mixer.isIoSectionVisible", mixer.isIoSectionVisible ());
         tf.testSettableBooleanValue ("mixer.isMeterSectionVisible", mixer.isMeterSectionVisible ());
         tf.testSettableBooleanValue ("mixer.isSendSectionVisible", mixer.isSendSectionVisible ());
+
+        return true;
     }
 }

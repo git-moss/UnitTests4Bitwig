@@ -1,5 +1,5 @@
 // Written by Jürgen Moßgraber - mossgrabers.de
-// (c) 2017-2019
+// (c) 2019-2020
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
 package de.mossgrabers.module;
@@ -37,9 +37,10 @@ public class SceneModule extends TestModule
 
     /** {@inheritDoc} */
     @Override
-    public void registerTests (final TestFramework tf, final ControllerHost host)
+    public boolean registerTests (final TestFramework tf, final ControllerHost host)
     {
-        super.registerTests (tf, host);
+        if (!super.registerTests (tf, host))
+            return false;
 
         final int numScenes = 3;
         final SceneBank sceneBank = host.createSceneBank (numScenes);
@@ -56,6 +57,8 @@ public class SceneModule extends TestModule
             tf.testIntegerValue ("scene.clipCount", scene.clipCount (), Integer.valueOf (SCENE_VALUES[i].clipCount));
             tf.testColorValue ("scene.color", scene.color (), Double.valueOf (0.0), Double.valueOf (0.6000000238418579), Double.valueOf (0.8509804010391235));
         }
+
+        return true;
     }
 
 

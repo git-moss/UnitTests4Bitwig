@@ -1,5 +1,5 @@
 // Written by Jürgen Moßgraber - mossgrabers.de
-// (c) 2017-2019
+// (c) 2019-2020
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
 package de.mossgrabers;
@@ -41,6 +41,13 @@ import java.util.Set;
  */
 public class TestFramework
 {
+    private static final String []                      VALUE_ACCESS       =
+    {
+        "Getter",
+        "Observer",
+        "Both"
+    };
+
     private static final String                         OBSERVING_PROPERTY = "Observing property ";
     private static final int                            ANSWER_DELAY       = 100;
     private static final Set<Class<? extends Value<?>>> SETTABLE_CLASSES   = new HashSet<> ();
@@ -56,8 +63,7 @@ public class TestFramework
 
     private ControllerHost             host;
     private final LinkedList<Runnable> scheduler = new LinkedList<> ();
-    private SettableEnumValue          getterSetting;
-    private SettableEnumValue          observerSetting;
+    private SettableEnumValue          valueAccessSetting;
 
 
     /**
@@ -76,13 +82,11 @@ public class TestFramework
     /**
      * Set the settings for dis-/enabling testing getters and/or observers.
      *
-     * @param getterSetting Test property getters when true
-     * @param observerSetting Test property observers when true
+     * @param valueAccessSetting Test property getters, observers or both
      */
-    public void setSettings (final SettableEnumValue getterSetting, final SettableEnumValue observerSetting)
+    public void setSettings (final SettableEnumValue valueAccessSetting)
     {
-        this.getterSetting = getterSetting;
-        this.observerSetting = observerSetting;
+        this.valueAccessSetting = valueAccessSetting;
     }
 
 
@@ -94,7 +98,7 @@ public class TestFramework
      */
     public void beginModuleTest (final String moduleName, final SettableEnumValue setting)
     {
-        this.host.scheduleTask ( () -> this.scheduleFunction (new ModuleSection (moduleName, setting)), ANSWER_DELAY);
+        this.host.scheduleTask ( () -> this.scheduleFunction (new ModuleSection (moduleName)), ANSWER_DELAY);
     }
 
 
@@ -526,7 +530,7 @@ public class TestFramework
         if (minValue == null)
         {
             this.delayedTestValueDefaultValue (propertyObject);
-            this.scheduleFunction ( () -> this.logger.info ("Value is readonly. Done.", 2));
+            this.scheduleFunction ( () -> this.logger.fine ("Value is readonly. Done.", 2));
             return;
         }
 
@@ -537,7 +541,7 @@ public class TestFramework
         // Don't toggle if not possible
         if (minValue.equals (propertyObject.getMaxValue ()))
         {
-            this.scheduleFunction ( () -> this.logger.info ("Value can't be toggled. Done.", 2));
+            this.scheduleFunction ( () -> this.logger.fine ("Value can't be toggled. Done.", 2));
             return;
         }
 
@@ -570,7 +574,7 @@ public class TestFramework
         if (isSettable (property))
         {
             this.delayedTestValueDefaultValue (propertyObject);
-            this.scheduleFunction ( () -> this.logger.info ("Value is readonly. Done.", 2));
+            this.scheduleFunction ( () -> this.logger.fine ("Value is readonly. Done.", 2));
             return;
         }
 
@@ -666,7 +670,7 @@ public class TestFramework
 
     private void delayedResetValue (final Value<?> property, final Object value)
     {
-        this.scheduleFunction ( () -> this.logger.info ("Resetting value to " + value.toString () + ".", 2));
+        this.scheduleFunction ( () -> this.logger.fine ("Resetting value to " + value.toString () + ".", 2));
         this.scheduleFunction ( () -> this.setPropertyValue (property, value));
     }
 
@@ -677,7 +681,7 @@ public class TestFramework
         final PropertyTestValues<BooleanValue, Boolean> propertyObject = new PropertyTestValues<> (propertyName, property, defaultValue == null ? BOOLEAN_OPTS : Collections.singleton (defaultValue), minValue, maxValue, testValue);
         if (this.testObserver ())
         {
-            this.logger.info (OBSERVING_PROPERTY + propertyName, 1);
+            this.logger.fine (OBSERVING_PROPERTY + propertyName, 1);
             property.addValueObserver (propertyObject::setObserved);
         }
         return propertyObject;
@@ -690,7 +694,7 @@ public class TestFramework
         final PropertyTestValues<TimeSignatureValue, String> propertyObject = new PropertyTestValues<> (propertyName, property, defaultValue, minValue, maxValue, testValue);
         if (this.testObserver ())
         {
-            this.logger.info (OBSERVING_PROPERTY + propertyName, 1);
+            this.logger.fine (OBSERVING_PROPERTY + propertyName, 1);
             property.addValueObserver (propertyObject::setObserved);
         }
         return propertyObject;
@@ -703,7 +707,7 @@ public class TestFramework
         final PropertyTestValues<ColorValue, Double []> propertyObject = new PropertyTestValues<> (propertyName, property, defaultValue, null, null, null);
         if (this.testObserver ())
         {
-            this.logger.info (OBSERVING_PROPERTY + propertyName, 1);
+            this.logger.fine (OBSERVING_PROPERTY + propertyName, 1);
             property.addValueObserver ( (red, green, blue) -> propertyObject.setObserved (new Double []
             {
                 Double.valueOf (red),
@@ -727,7 +731,7 @@ public class TestFramework
         final PropertyTestValues<StringValue, String> propertyObject = new PropertyTestValues<> (propertyName, property, defaultValue, minValue, maxValue, testValue);
         if (this.testObserver ())
         {
-            this.logger.info (OBSERVING_PROPERTY + propertyName, 1);
+            this.logger.fine (OBSERVING_PROPERTY + propertyName, 1);
             property.addValueObserver (propertyObject::setObserved);
         }
         return propertyObject;
@@ -740,7 +744,7 @@ public class TestFramework
         final PropertyTestValues<StringArrayValue, String []> propertyObject = new PropertyTestValues<> (propertyName, property, defaultValue, minValue, maxValue, testValue);
         if (this.testObserver ())
         {
-            this.logger.info (OBSERVING_PROPERTY + propertyName, 1);
+            this.logger.fine (OBSERVING_PROPERTY + propertyName, 1);
             property.addValueObserver (propertyObject::setObserved);
         }
         return propertyObject;
@@ -753,7 +757,7 @@ public class TestFramework
         final PropertyTestValues<IntegerValue, Integer> propertyObject = new PropertyTestValues<> (propertyName, property, defaultValue, minValue, maxValue, testValue);
         if (this.testObserver ())
         {
-            this.logger.info (OBSERVING_PROPERTY + propertyName, 1);
+            this.logger.fine (OBSERVING_PROPERTY + propertyName, 1);
             property.addValueObserver (value -> propertyObject.setObserved (Integer.valueOf (value)));
         }
         return propertyObject;
@@ -766,7 +770,7 @@ public class TestFramework
         final PropertyTestValues<SettableBeatTimeValue, Double> propertyObject = new PropertyTestValues<> (propertyName, property, defaultValue, minValue, maxValue, testValue);
         if (this.testObserver ())
         {
-            this.logger.info (OBSERVING_PROPERTY + propertyName, 1);
+            this.logger.fine (OBSERVING_PROPERTY + propertyName, 1);
             property.addValueObserver (value -> propertyObject.setObserved (Double.valueOf (value)));
         }
         return propertyObject;
@@ -779,7 +783,7 @@ public class TestFramework
         final PropertyTestValues<SettableEnumValue, String> propertyObject = new PropertyTestValues<> (propertyName, property, defaultValue, testValue, testValue, testValue);
         if (this.testObserver ())
         {
-            this.logger.info (OBSERVING_PROPERTY + propertyName, 1);
+            this.logger.fine (OBSERVING_PROPERTY + propertyName, 1);
             property.addValueObserver (propertyObject::setObserved);
         }
         return propertyObject;
@@ -792,7 +796,7 @@ public class TestFramework
         final PropertyTestValues<DoubleValue, Double> propertyObject = new PropertyTestValues<> (propertyName, property, defaultValue, minValue, maxValue, testValue);
         if (this.testObserver ())
         {
-            this.logger.info (OBSERVING_PROPERTY + propertyName, 1);
+            this.logger.fine (OBSERVING_PROPERTY + propertyName, 1);
             property.addValueObserver (value -> propertyObject.setObserved (Double.valueOf (value)));
         }
         return propertyObject;
@@ -805,7 +809,7 @@ public class TestFramework
         final PropertyTestValues<RangedValue, Double> propertyObject = new PropertyTestValues<> (propertyName, property, defaultValue, minValue, maxValue, testValue);
         if (this.testObserver ())
         {
-            this.logger.info (OBSERVING_PROPERTY + propertyName, 1);
+            this.logger.fine (OBSERVING_PROPERTY + propertyName, 1);
             property.addValueObserver (value -> propertyObject.setObserved (Double.valueOf (value)));
         }
         return propertyObject;
@@ -818,7 +822,7 @@ public class TestFramework
         final PropertyTestValues<EnumValue, String> propertyObject = new PropertyTestValues<> (propertyName, property, defaultValue, minValue, maxValue, testValue);
         if (this.testObserver ())
         {
-            this.logger.info (OBSERVING_PROPERTY + propertyName, 1);
+            this.logger.fine (OBSERVING_PROPERTY + propertyName, 1);
             property.addValueObserver (propertyObject::setObserved);
         }
         return propertyObject;
@@ -829,7 +833,7 @@ public class TestFramework
     {
         if (!this.testGetter ())
             return;
-        this.logger.info ("Marking property " + propertyName, 1);
+        this.logger.fine ("Marking property " + propertyName, 1);
         property.markInterested ();
     }
 
@@ -845,7 +849,7 @@ public class TestFramework
             }
             catch (final RuntimeException ex)
             {
-                this.logger.info (name + "  (get): '" + ex.getLocalizedMessage () + "', OK.", 2);
+                this.logger.fine (name + "  (get): '" + ex.getLocalizedMessage () + "', OK.", 2);
             }
         }
 
@@ -910,7 +914,7 @@ public class TestFramework
     private void printEqualsMessage (final String prefix, final boolean condition, final Object expectedValue, final Object actualValue, final int padDepth)
     {
         if (condition)
-            this.logger.info (prefix + " value was '" + printValue (actualValue) + "', OK.", padDepth);
+            this.logger.fine (prefix + " value was '" + printValue (actualValue) + "', OK.", padDepth);
         else
             this.logger.error (prefix + " value was '" + printValue (actualValue) + "' but must be '" + printValue (expectedValue) + "'.", padDepth);
     }
@@ -984,17 +988,7 @@ public class TestFramework
         {
             exec.run ();
 
-            if (exec instanceof ModuleSection)
-            {
-                final ModuleSection ms = (ModuleSection) exec;
-                if (!ms.isEnabled ())
-                {
-                    this.logger.info ("Skipping disabled module " + ms.moduleName, 1);
-                    while (!this.scheduler.isEmpty () && !(this.scheduler.getFirst () instanceof ModuleSection))
-                        this.scheduler.remove ();
-                }
-            }
-            else if (exec instanceof BrowserModule.BrowserStarter)
+            if (exec instanceof BrowserModule.BrowserStarter)
             {
                 delay = 2000;
                 this.logger.info ("Waiting 2 seconds for browser...", 1);
@@ -1100,39 +1094,33 @@ public class TestFramework
 
     private boolean testObserver ()
     {
-        return BooleanSetting.isTrue (this.observerSetting);
+        final String val = this.valueAccessSetting.get ();
+        return VALUE_ACCESS[1].equals (val) || VALUE_ACCESS[2].equals (val);
     }
 
 
     private boolean testGetter ()
     {
-        return BooleanSetting.isTrue (this.getterSetting);
+        final String val = this.valueAccessSetting.get ();
+        return VALUE_ACCESS[0].equals (val) || VALUE_ACCESS[2].equals (val);
     }
 
 
     class ModuleSection implements Runnable
     {
-        String                    moduleName;
-        private SettableEnumValue setting;
+        String moduleName;
 
 
-        public ModuleSection (final String moduleName, final SettableEnumValue setting)
+        public ModuleSection (final String moduleName)
         {
             this.moduleName = moduleName;
-            this.setting = setting;
         }
 
 
         @Override
         public void run ()
         {
-            TestFramework.this.logger.header (this.moduleName + " module tests are starting ...");
-        }
-
-
-        public boolean isEnabled ()
-        {
-            return BooleanSetting.isTrue (this.setting);
+            TestFramework.this.logger.header (this.moduleName);
         }
     }
 }

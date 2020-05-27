@@ -1,5 +1,5 @@
 // Written by Jürgen Moßgraber - mossgrabers.de
-// (c) 2017-2019
+// (c) 2019-2020
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
 package de.mossgrabers.module;
@@ -53,9 +53,10 @@ public class CursorClipModule extends TestModule
 
     /** {@inheritDoc} */
     @Override
-    public void registerTests (final TestFramework tf, final ControllerHost host)
+    public boolean registerTests (final TestFramework tf, final ControllerHost host)
     {
-        super.registerTests (tf, host);
+        if (!super.registerTests (tf, host))
+            return false;
 
         final Clip clip = host.createLauncherCursorClip (8, 8);
         tf.assertNotNull ("Clip not created.", clip);
@@ -92,5 +93,7 @@ public class CursorClipModule extends TestModule
 
         // API 9
         tf.testEnumValue ("clip.launchMode", clip.launchMode (), LAUNCH_MODE_VALUES, LAUNCH_MODE_VALUES[0], LAUNCH_MODE_VALUES[1], LAUNCH_MODE_VALUES[2]);
+
+        return true;
     }
 }

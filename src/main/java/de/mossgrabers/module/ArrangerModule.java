@@ -1,5 +1,5 @@
 // Written by Jürgen Moßgraber - mossgrabers.de
-// (c) 2017-2019
+// (c) 2019-2020
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
 package de.mossgrabers.module;
@@ -44,9 +44,10 @@ public class ArrangerModule extends TestModule
 
     /** {@inheritDoc} */
     @Override
-    public void registerTests (final TestFramework tf, final ControllerHost host)
+    public boolean registerTests (final TestFramework tf, final ControllerHost host)
     {
-        super.registerTests (tf, host);
+        if (!super.registerTests (tf, host))
+            return false;
 
         final Arranger arranger = host.createArranger ();
         tf.assertNotNull ("Arranger not created.", arranger);
@@ -73,5 +74,7 @@ public class ArrangerModule extends TestModule
         tf.testBooleanValue ("arranger.markers[1].exists", secondMarker.exists (), Boolean.FALSE);
         tf.testStringValue ("arranger.markers[1].name", secondMarker.getName (), "");
         tf.testColorValue ("arranger.markers[1].color", secondMarker.getColor (), Double.valueOf (0), Double.valueOf (0), Double.valueOf (0));
+
+        return true;
     }
 }

@@ -1,5 +1,5 @@
 // Written by Jürgen Moßgraber - mossgrabers.de
-// (c) 2017-2019
+// (c) 2019-2020
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
 package de.mossgrabers.module;
@@ -41,9 +41,10 @@ public class TrackBankModule extends TestModule
 
     /** {@inheritDoc} */
     @Override
-    public void registerTests (final TestFramework tf, final ControllerHost host)
+    public boolean registerTests (final TestFramework tf, final ControllerHost host)
     {
-        super.registerTests (tf, host);
+        if (!super.registerTests (tf, host))
+            return false;
 
         final Mixer mixer = host.createMixer ();
         tf.assertNotNull ("Mixer not created.", mixer);
@@ -122,5 +123,7 @@ public class TrackBankModule extends TestModule
             tf.testIntegerValue ("fxTrackBank.itemCount", fxTrackBank.itemCount (), Integer.valueOf (1));
             tf.testBooleanValue ("fxTrackBank.track0.getIsPreFader", fxTrackBank.getItemAt (0).getIsPreFader (), Boolean.FALSE);
         }
+
+        return true;
     }
 }

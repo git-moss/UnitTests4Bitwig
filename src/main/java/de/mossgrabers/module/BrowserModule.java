@@ -1,5 +1,5 @@
 // Written by Jürgen Moßgraber - mossgrabers.de
-// (c) 2017-2019
+// (c) 2019-2020
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
 package de.mossgrabers.module;
@@ -43,9 +43,10 @@ public class BrowserModule extends TestModule
 
     /** {@inheritDoc} */
     @Override
-    public void registerTests (final TestFramework tf, final ControllerHost host)
+    public boolean registerTests (final TestFramework tf, final ControllerHost host)
     {
-        super.registerTests (tf, host);
+        if (!super.registerTests (tf, host))
+            return false;
 
         final CursorTrack cursorTrack = host.createCursorTrack (NUM_SENDS, 0);
         final CursorDevice cursorDevice = cursorTrack.createCursorDevice ();
@@ -75,6 +76,8 @@ public class BrowserModule extends TestModule
         tf.testIntegerValue ("browser.selectedContentTypeIndex", browser.selectedContentTypeIndex (), Integer.valueOf (1), Integer.valueOf (0), Integer.valueOf (4), Integer.valueOf (2), Integer.valueOf (0));
 
         host.scheduleTask ( () -> delayedBrowserClose (tf, browser), ANSWER_DELAY);
+
+        return true;
     }
 
 

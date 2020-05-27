@@ -1,5 +1,5 @@
 // Written by Jürgen Moßgraber - mossgrabers.de
-// (c) 2017-2019
+// (c) 2019-2020
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
 package de.mossgrabers;
@@ -33,6 +33,12 @@ import java.util.List;
 public class UnitTestsExtension extends ControllerExtension
 {
     private static final String    CATEGORY_GLOBAL = "Global";
+    private static final String [] VALUE_ACCESS    =
+    {
+        "Getter",
+        "Observer",
+        "Both"
+    };
 
     private final ConsoleLogger    logger;
     private final ControllerHost   host;
@@ -73,20 +79,22 @@ public class UnitTestsExtension extends ControllerExtension
         final Preferences preferences = this.host.getPreferences ();
         final SettableEnumValue loggingSetting = preferences.getEnumSetting ("Log all details (fine)", CATEGORY_GLOBAL, BooleanSetting.OPTIONS, BooleanSetting.OPTIONS[1]);
         loggingSetting.markInterested ();
-        final SettableEnumValue getterSetting = preferences.getEnumSetting ("Test value getters", CATEGORY_GLOBAL, BooleanSetting.OPTIONS, BooleanSetting.OPTIONS[1]);
-        getterSetting.markInterested ();
-        final SettableEnumValue observerSetting = preferences.getEnumSetting ("Test value observers", CATEGORY_GLOBAL, BooleanSetting.OPTIONS, BooleanSetting.OPTIONS[1]);
-        observerSetting.markInterested ();
+        final SettableEnumValue valueAccessSetting = preferences.getEnumSetting ("Test value access", CATEGORY_GLOBAL, VALUE_ACCESS, VALUE_ACCESS[2]);
+        valueAccessSetting.markInterested ();
 
-        this.tf.setSettings (getterSetting, observerSetting);
+        this.tf.setSettings (valueAccessSetting);
 
         this.logger.setLogLevel (loggingSetting);
-        this.logger.infoLine ();
+        this.getHost ().println ("");
+        this.logger.header ("Initializing test modules");
+        boolean hasTests = false;
         for (final TestModule module: this.modules)
-            module.registerTests (this.tf, this.host);
-        this.logger.infoLine ();
-
-        this.getHost ().println ("Initialized.");
+        {
+            if (module.registerTests (this.tf, this.host))
+                hasTests = true;
+        }
+        if (!hasTests)
+            this.getHost ().println ("All test modules are disabled.");
 
         this.host.scheduleTask (this.tf::executeScheduler, 1000);
     }
@@ -96,7 +104,7 @@ public class UnitTestsExtension extends ControllerExtension
     @Override
     public void exit ()
     {
-        this.getHost ().println ("Exited.");
+        // Intentionally empty
     }
 
 

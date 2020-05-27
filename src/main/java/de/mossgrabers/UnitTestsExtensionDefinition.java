@@ -1,5 +1,5 @@
 // Written by Jürgen Moßgraber - mossgrabers.de
-// (c) 2017-2019
+// (c) 2019-2020
 // Licensed under LGPLv3 - http://www.gnu.org/licenses/lgpl-3.0.txt
 
 package de.mossgrabers;
@@ -75,7 +75,7 @@ public class UnitTestsExtensionDefinition extends ControllerExtensionDefinition
     @Override
     public int getRequiredAPIVersion ()
     {
-        return 10;
+        return 11;
     }
 
 
