@@ -11,10 +11,6 @@ import com.bitwig.extension.controller.api.ControllerHost;
 import com.bitwig.extension.controller.api.CueMarker;
 import com.bitwig.extension.controller.api.CueMarkerBank;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-
 
 /**
  * Module tests for the Arranger class.
@@ -23,16 +19,6 @@ import java.util.Set;
  */
 public class ArrangerModule extends TestModule
 {
-    private static final Set<String> PANEL_LAYOUTS   = new HashSet<> ();
-    private static final Set<String> DISPLAY_LAYOUTS = new HashSet<> ();
-
-    static
-    {
-        Collections.addAll (PANEL_LAYOUTS, "ARRANGE", "MIX", "EDIT", "PLAY");
-        Collections.addAll (DISPLAY_LAYOUTS, "Single Display (Small)", "Single Display (Large)", "Dual Display (Studio)", "Dual Display (Arranger/Mixer)", "Dual Display (Master/Detail)", "Triple Display", "Tablet");
-    }
-
-
     /**
      * Constructor.
      */

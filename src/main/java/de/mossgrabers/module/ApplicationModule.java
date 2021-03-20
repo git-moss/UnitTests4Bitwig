@@ -9,8 +9,6 @@ import de.mossgrabers.TestFramework;
 import com.bitwig.extension.controller.api.Application;
 import com.bitwig.extension.controller.api.ControllerHost;
 
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 
 
@@ -21,8 +19,8 @@ import java.util.Set;
  */
 public class ApplicationModule extends TestModule
 {
-    private static final Set<String> PANEL_LAYOUTS            = new HashSet<> ();
-    private static final Set<String> DISPLAY_LAYOUTS          = new HashSet<> ();
+    private static final Set<String> PANEL_LAYOUTS            = Set.of ("ARRANGE", "MIX", "EDIT", "PLAY");
+    private static final Set<String> DISPLAY_LAYOUTS          = Set.of ("Single Display (Small)", "Single Display (Large)", "Dual Display (Studio)", "Dual Display (Arranger/Mixer)", "Dual Display (Master/Detail)", "Triple Display", "Tablet");
     private static final String []   RECORD_QUANTIZATION_GRID =
     {
         "OFF",
@@ -31,12 +29,6 @@ public class ApplicationModule extends TestModule
         "1/8",
         "1/4"
     };
-
-    static
-    {
-        Collections.addAll (PANEL_LAYOUTS, "ARRANGE", "MIX", "EDIT", "PLAY");
-        Collections.addAll (DISPLAY_LAYOUTS, "Single Display (Small)", "Single Display (Large)", "Dual Display (Studio)", "Dual Display (Arranger/Mixer)", "Dual Display (Master/Detail)", "Triple Display", "Tablet");
-    }
 
 
     /**

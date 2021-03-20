@@ -10,8 +10,6 @@ import com.bitwig.extension.controller.api.ControllerHost;
 import com.bitwig.extension.controller.api.TimeSignatureValue;
 import com.bitwig.extension.controller.api.Transport;
 
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 
 
@@ -35,16 +33,9 @@ public class TransportModule extends TestModule
         "1/16"
     };
 
-    private static final Set<String> AUTOMATION_WRITE_MODE      = new HashSet<> ();
-    private static final Set<String> LAUNCHER_POST_REC_ACTIONS  = new HashSet<> ();
-    private static final Set<String> PRE_ROLL                   = new HashSet<> ();
-
-    static
-    {
-        Collections.addAll (AUTOMATION_WRITE_MODE, "latch", "touch", "write");
-        Collections.addAll (LAUNCHER_POST_REC_ACTIONS, "off", "play_recorded", "record_next_free_slot", "stop", "return_to_arrangement", "return_to_previous_clip", "play_random");
-        Collections.addAll (PRE_ROLL, "none", "one_bar", "two_bars", "four_bars");
-    }
+    private static final Set<String> AUTOMATION_WRITE_MODE      = Set.of ("latch", "touch", "write");
+    private static final Set<String> LAUNCHER_POST_REC_ACTIONS  = Set.of ("off", "play_recorded", "record_next_free_slot", "stop", "return_to_arrangement", "return_to_previous_clip", "play_random");
+    private static final Set<String> PRE_ROLL                   = Set.of ("none", "one_bar", "two_bars", "four_bars");
 
 
     /**

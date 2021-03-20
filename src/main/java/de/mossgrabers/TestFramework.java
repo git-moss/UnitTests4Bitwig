@@ -50,20 +50,14 @@ public class TestFramework
 
     private static final String                         OBSERVING_PROPERTY = "Observing property ";
     private static final int                            ANSWER_DELAY       = 100;
-    private static final Set<Class<? extends Value<?>>> SETTABLE_CLASSES   = new HashSet<> ();
-    private static final Set<Boolean>                   BOOLEAN_OPTS       = new HashSet<> (2);
+    private static final Set<Class<? extends Value<?>>> SETTABLE_CLASSES   = Set.of (SettableBooleanValue.class, SettableStringValue.class, SettableIntegerValue.class, SettableDoubleValue.class, SettableRangedValue.class);
+    private static final Set<Boolean>                   BOOLEAN_OPTS       = Set.of (Boolean.FALSE, Boolean.TRUE);
 
-    static
-    {
-        Collections.addAll (BOOLEAN_OPTS, Boolean.FALSE, Boolean.TRUE);
-        Collections.addAll (SETTABLE_CLASSES, SettableBooleanValue.class, SettableStringValue.class, SettableIntegerValue.class, SettableDoubleValue.class, SettableRangedValue.class);
-    }
+    ConsoleLogger                                       logger;
 
-    ConsoleLogger                      logger;
-
-    private ControllerHost             host;
-    private final LinkedList<Runnable> scheduler = new LinkedList<> ();
-    private SettableEnumValue          valueAccessSetting;
+    private ControllerHost                              host;
+    private final LinkedList<Runnable>                  scheduler          = new LinkedList<> ();
+    private SettableEnumValue                           valueAccessSetting;
 
 
     /**
