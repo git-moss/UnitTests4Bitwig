@@ -9,7 +9,6 @@ import de.mossgrabers.TestFramework;
 import com.bitwig.extension.controller.api.ClipLauncherSlot;
 import com.bitwig.extension.controller.api.ClipLauncherSlotBank;
 import com.bitwig.extension.controller.api.ControllerHost;
-import com.bitwig.extension.controller.api.Mixer;
 import com.bitwig.extension.controller.api.Send;
 import com.bitwig.extension.controller.api.SendBank;
 import com.bitwig.extension.controller.api.Track;
@@ -45,9 +44,6 @@ public class TrackBankModule extends TestModule
     {
         if (!super.registerTests (tf, host))
             return false;
-
-        final Mixer mixer = host.createMixer ();
-        tf.assertNotNull ("Mixer not created.", mixer);
 
         final TrackBank trackBank = host.createMainTrackBank (NUM_TRACKS, NUM_SENDS, NUM_SCENES);
         tf.assertNotNull ("Track bank not created.", trackBank);

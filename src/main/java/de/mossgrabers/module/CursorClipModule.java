@@ -9,6 +9,7 @@ import de.mossgrabers.TestFramework;
 import com.bitwig.extension.controller.api.Clip;
 import com.bitwig.extension.controller.api.ClipLauncherSlotBank;
 import com.bitwig.extension.controller.api.ControllerHost;
+import com.bitwig.extension.controller.api.Track;
 import com.bitwig.extension.controller.api.TrackBank;
 
 
@@ -66,7 +67,10 @@ public class CursorClipModule extends TestModule
 
         // Make sure that the first slot is selected for testing
         tf.scheduleFunction ( () -> {
-            final ClipLauncherSlotBank slotBank = trackBank.getItemAt (0).clipLauncherSlotBank ();
+            final Track track = trackBank.getItemAt (0);
+            track.selectInEditor ();
+            track.selectInMixer ();
+            final ClipLauncherSlotBank slotBank = track.clipLauncherSlotBank ();
             slotBank.select (0);
             slotBank.showInEditor (0);
             clip.scrollToKey (36);

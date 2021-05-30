@@ -11,6 +11,7 @@ import de.mossgrabers.module.CursorClipModule;
 import de.mossgrabers.module.GrooveModule;
 import de.mossgrabers.module.MixerModule;
 import de.mossgrabers.module.NoteRepeatModule;
+import de.mossgrabers.module.ProjectModule;
 import de.mossgrabers.module.SceneModule;
 import de.mossgrabers.module.TestModule;
 import de.mossgrabers.module.TrackBankModule;
@@ -60,6 +61,7 @@ public class UnitTestsExtension extends ControllerExtension
         this.tf = new TestFramework (host, this.logger);
 
         this.modules.add (new ApplicationModule ());
+        this.modules.add (new ProjectModule ());
         this.modules.add (new ArrangerModule ());
         this.modules.add (new MixerModule ());
         this.modules.add (new TransportModule ());
