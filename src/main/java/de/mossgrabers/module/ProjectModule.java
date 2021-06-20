@@ -44,7 +44,7 @@ public class ProjectModule extends TestModule
         tf.testBooleanValue ("project.hasArmedTracks", project.hasArmedTracks ());
 
         // API 14
-        tf.testBooleanValue ("project.isFillModeActive", project.isFillModeActive ());
+        tf.testSettableBooleanValue ("project.isFillModeActive", project.isFillModeActive ());
 
         return true;
     }
