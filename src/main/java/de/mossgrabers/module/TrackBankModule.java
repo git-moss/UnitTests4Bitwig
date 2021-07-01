@@ -83,8 +83,8 @@ public class TrackBankModule extends TestModule
             tf.testIntegerValue (trackName + ".position", track.position (), Integer.valueOf (i));
             tf.testBooleanValue (trackName + ".isGroup", track.isGroup (), Boolean.FALSE);
             tf.testBooleanValue (trackName + ".arm", track.arm (), Boolean.valueOf (i == 0));
-            tf.testBooleanValue (trackName + ".monitor", track.monitor (), Boolean.valueOf (i == 0));
-            tf.testBooleanValue (trackName + ".autoMonitor", track.autoMonitor (), Boolean.TRUE);
+            tf.testBooleanValue (trackName + ".monitor", track.isMonitoring (), Boolean.valueOf (i == 0));
+            tf.testEnumValue (trackName + ".monitorMode", track.monitorMode (), Collections.singleton ("AUTO"), "AUTO", "ON", "AUTO");
             tf.testEnumValue (trackName + ".crossFadeMode", track.crossFadeMode (), Collections.singleton (i == 0 ? "AB" : "B"), "AB", "A", "B");
             tf.testBooleanValue (trackName + ".canHoldNoteData", track.canHoldNoteData (), Boolean.valueOf (i == 0));
             tf.testBooleanValue (trackName + ".canHoldAudioData", track.canHoldAudioData (), Boolean.valueOf (i != 0));

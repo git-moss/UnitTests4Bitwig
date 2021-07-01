@@ -99,7 +99,7 @@ public class TestFramework
     /**
      * Test a time signature property value.
      *
-     * @param propertyName The name of the propery
+     * @param propertyName The name of the property
      * @param property The property
      * @param defaultValue The default value to test
      * @param minValue The minimum value to test
@@ -116,7 +116,7 @@ public class TestFramework
     /**
      * Test a parameter property value.
      *
-     * @param propertyName The name of the propery
+     * @param propertyName The name of the property
      * @param property The property
      * @param defaultValue The default value to test
      * @param minValue The minimum value to test
@@ -134,7 +134,7 @@ public class TestFramework
     /**
      * Test a beat time value.
      *
-     * @param propertyName The name of the propery
+     * @param propertyName The name of the property
      * @param property The property
      * @param defaultValue The default value to test
      * @param minValue The minimum value to test
@@ -153,7 +153,7 @@ public class TestFramework
     /**
      * Test a parameter property value.
      *
-     * @param propertyName The name of the propery
+     * @param propertyName The name of the property
      * @param property The property
      * @param defaultValue The default value to test
      * @param minValue The minimum value to test
@@ -180,7 +180,7 @@ public class TestFramework
      * Test a boolean property value. Note that Value is actually also the SettableValue interface
      * and only different in the documentation!
      *
-     * @param propertyName The name of the propery
+     * @param propertyName The name of the property
      * @param property The property
      */
     public void testBooleanValue (final String propertyName, final BooleanValue property)
@@ -193,7 +193,7 @@ public class TestFramework
      * Test a boolean property value. Note that Value is actually also the SettableValue interface
      * and only different in the documentation!
      *
-     * @param propertyName The name of the propery
+     * @param propertyName The name of the property
      * @param property The property
      * @param defaultValue The default value to test
      */
@@ -207,7 +207,7 @@ public class TestFramework
     /**
      * Test a boolean property value.
      *
-     * @param propertyName The name of the propery
+     * @param propertyName The name of the property
      * @param property The property
      */
     public void testSettableBooleanValue (final String propertyName, final SettableBooleanValue property)
@@ -219,7 +219,7 @@ public class TestFramework
     /**
      * Test a boolean property value.
      *
-     * @param propertyName The name of the propery
+     * @param propertyName The name of the property
      * @param property The property
      * @param defaultValue The default value to test
      * @param minValue The minimum value to test
@@ -235,7 +235,7 @@ public class TestFramework
     /**
      * Test a string property value.
      *
-     * @param propertyName The name of the propery
+     * @param propertyName The name of the property
      * @param property The property
      * @param defaultValue The default value to test
      */
@@ -248,7 +248,7 @@ public class TestFramework
     /**
      * Test a string property value.
      *
-     * @param propertyName The name of the propery
+     * @param propertyName The name of the property
      * @param property The property
      * @param defaultValues The default values to test
      */
@@ -262,7 +262,7 @@ public class TestFramework
     /**
      * Test a string property value.
      *
-     * @param propertyName The name of the propery
+     * @param propertyName The name of the property
      * @param property The property
      * @param defaultValue The default value to test
      * @param minValue The minimum value to test
@@ -279,7 +279,7 @@ public class TestFramework
     /**
      * Test a string array property value.
      *
-     * @param propertyName The name of the propery
+     * @param propertyName The name of the property
      * @param property The property
      * @param defaultValue The default value to test
      */
@@ -293,7 +293,7 @@ public class TestFramework
     /**
      * Test a settable enum property value.
      *
-     * @param propertyName The name of the propery
+     * @param propertyName The name of the property
      * @param property The property
      * @param enumValues The possible values for the enum
      * @param defaultValue The default value to test
@@ -311,7 +311,7 @@ public class TestFramework
     /**
      * Test an integer property value.
      *
-     * @param propertyName The name of the propery
+     * @param propertyName The name of the property
      * @param property The property
      * @param defaultValue The default value to test
      */
@@ -325,7 +325,7 @@ public class TestFramework
     /**
      * Test an integer property value.
      *
-     * @param propertyName The name of the propery
+     * @param propertyName The name of the property
      * @param property The property
      * @param defaultValue The default value to test
      * @param minValue The minimum value to test
@@ -341,7 +341,7 @@ public class TestFramework
     /**
      * Test an integer property value.
      *
-     * @param propertyName The name of the propery
+     * @param propertyName The name of the property
      * @param property The property
      * @param defaultValue The default value to test
      * @param minValue The minimum value to test
@@ -359,7 +359,7 @@ public class TestFramework
     /**
      * Test a double property value.
      *
-     * @param propertyName The name of the propery
+     * @param propertyName The name of the property
      * @param property The property
      * @param defaultValue The default value to test
      * @param minValue The minimum value to test
@@ -376,7 +376,7 @@ public class TestFramework
     /**
      * Test a ranged property value.
      *
-     * @param propertyName The name of the propery
+     * @param propertyName The name of the property
      * @param property The property
      * @param defaultValue The default value to test
      * @param minValue The minimum value to test
@@ -392,7 +392,7 @@ public class TestFramework
     /**
      * Test a ranged property value.
      *
-     * @param propertyName The name of the propery
+     * @param propertyName The name of the property
      * @param property The property
      * @param defaultValue The default value to test
      * @param minValue The minimum value to test
@@ -412,7 +412,7 @@ public class TestFramework
     /**
      * Test a ranged property value.
      *
-     * @param propertyName The name of the propery
+     * @param propertyName The name of the property
      * @param property The property
      * @param defaultValue The default value to test
      */
@@ -425,7 +425,7 @@ public class TestFramework
     /**
      * Test a ranged property value.
      *
-     * @param propertyName The name of the propery
+     * @param propertyName The name of the property
      * @param property The property
      * @param defaultValue The default value to test
      * @param defaultDisplayValue The displayed string value
@@ -442,7 +442,7 @@ public class TestFramework
     /**
      * Test an enum property value.
      *
-     * @param propertyName The name of the propery
+     * @param propertyName The name of the property
      * @param property The property
      * @param defaultValues The default values
      * @param minValue The minimum value to test
@@ -458,9 +458,9 @@ public class TestFramework
 
 
     /**
-     * Test an enum property value.
+     * Test an enumeration property value.
      *
-     * @param propertyName The name of the propery
+     * @param propertyName The name of the property
      * @param property The property
      * @param defaultValues The default values
      * @param minValue The minimum value to test
@@ -477,7 +477,7 @@ public class TestFramework
     /**
      * Test a color property value.
      *
-     * @param propertyName The name of the propery
+     * @param propertyName The name of the property
      * @param property The property
      * @param redValue The value for red
      * @param greenValue The value for green
@@ -586,7 +586,7 @@ public class TestFramework
         this.delayedResetValue (property, value);
         this.delayedDisableValueUpdates (property);
 
-        // Retest, but now value must not update
+        // Test again, but now value must not update
         this.scheduleFunction ( () -> this.setPropertyValue (property, testValue));
         this.scheduleFunction ( () -> this.assertOffEqualsValue ("(Off) Test", expectedDisabledValue, propertyObject));
 

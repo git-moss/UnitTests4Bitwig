@@ -93,6 +93,9 @@ public class TransportModule extends TestModule
         // API 8
         tf.testSettableEnumValue ("transport.defaultLaunchQuantization", transport.defaultLaunchQuantization (), LAUNCH_QUANTIZATION_VALUES, LAUNCH_QUANTIZATION_VALUES[4]);
 
+        // API 14
+        tf.testSettableBooleanValue ("transport.isFillModeActive", transport.isFillModeActive ());
+
         return true;
     }
 }
