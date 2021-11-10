@@ -35,7 +35,7 @@ public class UnitTestsExtensionDefinition extends ControllerExtensionDefinition
     @Override
     public String getVersion ()
     {
-        return "4.0";
+        return "15";
     }
 
 
@@ -75,7 +75,7 @@ public class UnitTestsExtensionDefinition extends ControllerExtensionDefinition
     @Override
     public int getRequiredAPIVersion ()
     {
-        return 14;
+        return 15;
     }
 
 

@@ -79,6 +79,10 @@ public class TransportModule extends TestModule
         tf.testSettableBeatTimeValue ("transport.getPosition", transport.getPosition (), Double.valueOf (0.0), Double.valueOf (0.0), Double.valueOf (1.0), Double.valueOf (10.0), "001:01:01:00");
         tf.testSettableBeatTimeValue ("transport.getInPosition", transport.getInPosition (), Double.valueOf (0.0), Double.valueOf (0.0), Double.valueOf (1.0), Double.valueOf (10.0), "001:01:01:00");
         tf.testSettableBeatTimeValue ("transport.getOutPosition", transport.getOutPosition (), Double.valueOf (4.0), Double.valueOf (1.0), Double.valueOf (2.0), Double.valueOf (10.0), "002:01:01:00");
+
+        tf.testSettableBeatTimeValue ("transport.arrangerLoopStart", transport.arrangerLoopStart (), Double.valueOf (0.0), Double.valueOf (0.0), Double.valueOf (1.0), Double.valueOf (0.5), "001:01:01:00");
+        tf.testSettableBeatTimeValue ("transport.arrangerLoopDuration", transport.arrangerLoopDuration (), Double.valueOf (4.0), Double.valueOf (0.0), Double.valueOf (4.0), Double.valueOf (2.0), "001:00:00:00");
+
         tf.testParameter ("transport.crossfade", transport.crossfade (), Double.valueOf (0.5), Double.valueOf (0.0), Double.valueOf (1.0), Double.valueOf (0.75), "0.00 %", "Crossfade");
 
         final TimeSignatureValue timeSignature = transport.timeSignature ();

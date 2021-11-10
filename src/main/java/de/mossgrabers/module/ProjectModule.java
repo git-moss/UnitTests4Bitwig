@@ -36,7 +36,7 @@ public class ProjectModule extends TestModule
         final Project project = host.getProject ();
         tf.assertNotNull ("Project not created.", project);
 
-        tf.testParameter ("project.cueVolume", project.cueVolume (), Double.valueOf (0.7937005259840999), Double.valueOf (0), Double.valueOf (1.0), Double.valueOf (0.25), "0.0 dB", "Volume", null, null, null);
+        tf.testParameter ("project.cueVolume", project.cueVolume (), Double.valueOf (0.7937005259840999), Double.valueOf (0), Double.valueOf (1.0), Double.valueOf (0.25), "0.0 dB", "Cue Level", null, null, null);
         tf.testParameter ("project.cueMix", project.cueMix (), Double.valueOf (1.0), Double.valueOf (0), Double.valueOf (1.0), Double.valueOf (0.25), "100 %", "Cue Mix", null, null, null);
 
         tf.testBooleanValue ("project.hasSoloedTracks", project.hasSoloedTracks ());

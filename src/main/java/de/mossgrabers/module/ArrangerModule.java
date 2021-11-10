@@ -54,11 +54,11 @@ public class ArrangerModule extends TestModule
         final CueMarker secondMarker = markerBank.getItemAt (1);
 
         tf.testBooleanValue ("arranger.markers[0].exists", firstMarker.exists (), Boolean.TRUE);
-        tf.testStringValue ("arranger.markers[0].name", firstMarker.getName (), "My Mark");
+        tf.testStringValue ("arranger.markers[0].name", firstMarker.name (), "My Mark");
         tf.testColorValue ("arranger.markers[0].color", firstMarker.getColor (), Double.valueOf (0.8999999761581421), Double.valueOf (0.8999999761581421), Double.valueOf (0));
 
         tf.testBooleanValue ("arranger.markers[1].exists", secondMarker.exists (), Boolean.FALSE);
-        tf.testStringValue ("arranger.markers[1].name", secondMarker.getName (), "");
+        tf.testStringValue ("arranger.markers[1].name", secondMarker.name (), "");
         tf.testColorValue ("arranger.markers[1].color", secondMarker.getColor (), Double.valueOf (0), Double.valueOf (0), Double.valueOf (0));
 
         return true;
