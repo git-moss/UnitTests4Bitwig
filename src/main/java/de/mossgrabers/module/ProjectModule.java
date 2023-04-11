@@ -42,6 +42,7 @@ public class ProjectModule extends TestModule
         tf.testBooleanValue ("project.hasSoloedTracks", project.hasSoloedTracks ());
         tf.testBooleanValue ("project.hasMutedTracks", project.hasMutedTracks ());
         tf.testBooleanValue ("project.hasArmedTracks", project.hasArmedTracks ());
+        tf.testBooleanValue ("project.isModified", project.isModified ());
 
         return true;
     }

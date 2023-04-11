@@ -37,9 +37,11 @@ public class CursorClipModule extends TestModule
 
     private static final String [] LAUNCH_MODE_VALUES         =
     {
-        "play_with_quantization",
-        "continue_immediately",
-        "continue_with_quantization"
+        "default",
+        "from_start",
+        "continue_or_from_start",
+        "continue_or_synced",
+        "synced"
     };
 
 
@@ -95,7 +97,7 @@ public class CursorClipModule extends TestModule
         tf.testSettableEnumValue ("clip.launchQuantization", clip.launchQuantization (), LAUNCH_QUANTIZATION_VALUES, LAUNCH_QUANTIZATION_VALUES[0]);
         tf.testSettableBooleanValue ("clip.useLoopStartAsQuantizationReference", clip.useLoopStartAsQuantizationReference ());
 
-        // API 9
+        // API 9 / available values did change with API 18
         tf.testEnumValue ("clip.launchMode", clip.launchMode (), LAUNCH_MODE_VALUES, LAUNCH_MODE_VALUES[0], LAUNCH_MODE_VALUES[1], LAUNCH_MODE_VALUES[2]);
 
         return true;
