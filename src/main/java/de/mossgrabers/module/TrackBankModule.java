@@ -77,6 +77,7 @@ public class TrackBankModule extends TestModule
             tf.testParameter ("sendBank.getItemAt", send0, Double.valueOf (0), Double.valueOf (0), Double.valueOf (1.0), Double.valueOf (0.25), "-Inf dB", "Delay-2", null, null, null);
             tf.testBooleanValue ("send0.isPreFader", send0.isPreFader (), Boolean.FALSE);
             tf.testEnumValue ("send0.sendMode", send0.sendMode (), Collections.singleton ("AUTO"), "AUTO", "PRE", "POST");
+            tf.testSettableBooleanValue ("send0.isEnabled", send0.isEnabled (), Boolean.TRUE, Boolean.FALSE, Boolean.TRUE);
 
             // Track interface
             tf.testStringValue (trackName + ".trackType", track.trackType (), i == 0 ? "Instrument" : "Audio");

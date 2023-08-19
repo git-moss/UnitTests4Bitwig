@@ -35,7 +35,7 @@ public class UnitTestsExtensionDefinition extends ControllerExtensionDefinition
     @Override
     public String getVersion ()
     {
-        return "15";
+        return "18";
     }
 
 
